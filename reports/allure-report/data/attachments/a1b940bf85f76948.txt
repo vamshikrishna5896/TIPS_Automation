@@ -1,0 +1,32 @@
+MyKad : 950812456557
+Name : Vamshi
+Test Finished - Starting Teardown
+Attempting Logout...
+Current URL: https://agent-uat.tuneinsurance.com/#/qms/quote/medical/personal/pa-details
+Logout Failed: Locator.click: Timeout 5000ms exceeded.
+Call log:
+  - waiting for locator("a").filter(has_text="playwright.test@")
+    - locator resolved to <a _ngcontent-yxe-c502="" class="nav-link nav-profile d-flex align-items-center cursor-pointer pe-0">…</a>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class="cdk-overlay-backdrop mat-overlay-transparent-backdrop mat-datepicker-1-backdrop cdk-overlay-backdrop-showing"></div> from <div class="cdk-overlay-container">…</div> subtree intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class="cdk-overlay-backdrop mat-overlay-transparent-backdrop mat-datepicker-1-backdrop cdk-overlay-backdrop-showing"></div> from <div class="cdk-overlay-container">…</div> subtree intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    8 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class="cdk-overlay-backdrop mat-overlay-transparent-backdrop mat-datepicker-1-backdrop cdk-overlay-backdrop-showing"></div> from <div class="cdk-overlay-container">…</div> subtree intercepts pointer events
+    - retrying click action
+      - waiting 500ms
+
