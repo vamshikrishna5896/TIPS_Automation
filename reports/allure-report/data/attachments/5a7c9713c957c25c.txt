@@ -1,4 +1,0 @@
-Test Finished - Starting Teardown
-Attempting Logout...
-Current URL: https://ath-uat.tuneinsurance.com/realms/tune/protocol/openid-connect/auth?response_type=code&client_id=1003&state=amJVTFZRZVJHYzAuWG1waGJueDg0WGlEaFBWMDcyeUJmZ0JYcHZTc1hmWS1z&redirect_uri=https%3A%2F%2Fagent-uat.tuneinsurance.com%2F%2Fhome%3Fiss%3Dhttps%253A%252F%252Fath-uat.tuneinsurance.com%252Frealms%252Ftune%26iss%3Dhttps%253A%252F%252Fath-uat.tuneinsurance.com%252Frealms%252Ftune&scope=openid%20profile&code_challenge=6x5VMEcfq2gn7XjanQMXPeAYiS6Au7rb-pWMIM3sy4I&code_challenge_method=S256&nonce=amJVTFZRZVJHYzAuWG1waGJueDg0WGlEaFBWMDcyeUJmZ0JYcHZTc1hmWS1z
-Logout Failed: Page.wait_for_timeout: Target page, context or browser has been closed

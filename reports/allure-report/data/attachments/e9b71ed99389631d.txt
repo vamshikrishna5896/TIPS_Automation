@@ -1,0 +1,13 @@
+MyKad : 950812456557
+Name : Vamshi
+Test Finished - Starting Teardown
+Attempting Logout...
+Current URL: https://agent-uat.tuneinsurance.com/#/qms/quote/medical/personal/pa-details
+Logout Failed: Locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for get_by_role("button", name="playwright.test@serole.com")
+    - waiting for" https://ath-uat.tuneinsurance.com/realms/tune/protocol/openid-connect/logout?id_token_hint=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJaVFBQdHJEVlJHbmo5U3MtaVRPMGlQbXBsU1FfdFd6V015eGc1UzJXVndV…" navigation to finish...
+    - navigated to "https://agent-uat.tuneinsurance.com//home?iss=https%3A%2F%2Fath-uat.tuneinsurance.com%2Frealms%2Ftune&iss=https%3A%2F%2Fath-uat.tuneinsurance.com%2Frealms%2Ftune"
+    - waiting for" https://ath-uat.tuneinsurance.com/realms/tune/protocol/openid-connect/auth?response_type=code&client_id=1003&state=eUpPT3NfZHBfQ0FYQk5nOVRUTGFFdUZ6MEFsUnFUdF8wcVhFemhvR04xU3U1&redirect_uri=https%3A%2…" navigation to finish...
+    - navigated to "https://ath-uat.tuneinsurance.com/realms/tune/protocol/openid-connect/auth?response_type=code&client_id=1003&state=eUpPT3NfZHBfQ0FYQk5nOVRUTGFFdUZ6MEFsUnFUdF8wcVhFemhvR04xU3U1&redirect_uri=https%3A%2…"
+

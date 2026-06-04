@@ -1,6 +1,0 @@
-MyKad : 950812456557
-Name : Vamshi
-Test Finished - Starting Teardown
-Attempting Logout...
-Current URL: https://agent-uat.tuneinsurance.com/#/qms/quote/medical/personal/pa-details
-Logout Successful

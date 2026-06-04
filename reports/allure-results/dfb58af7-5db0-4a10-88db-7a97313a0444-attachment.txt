@@ -1,0 +1,8 @@
+Add button found
+Screenshot Captured
+Test Finished - Starting Teardown
+Trace Saved
+Attempting Logout...
+Current URL: https://agent-uat.tuneinsurance.com/#/qms/quote/medical/personal/additional-info?quoteNr=1000068810
+Logout Successful
+Logout Successful

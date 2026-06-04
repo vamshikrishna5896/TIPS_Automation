@@ -6,10 +6,10 @@ from TIPS_Pages.policy_creation import Policycreation
 
 test_data = ExcelReader.get_test_data()
 
-# @allure.epic("PA Insurance")
-# @allure.feature("Personal Accident Quote")
-# @allure.story("Create New Quote")
-# @allure.title("Create Personal Accident Quote")
+@allure.epic("PA Insurance")
+@allure.feature("Personal Accident Quote")
+@allure.story("Create New Quote")
+@allure.title("Create Personal Accident Quote")
 def test_create_quote(page):
 
     data = test_data[0]
