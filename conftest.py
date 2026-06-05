@@ -27,11 +27,11 @@ def page(request):
     )
 
     # Start Playwright Trace
-    context.tracing.start(
-        screenshots=True,
-        snapshots=True,
-        sources=True
-    )
+    # context.tracing.start(
+    #     screenshots=True,
+    #     snapshots=True,
+    #     sources=True
+    # )
 
     page = context.new_page()
 

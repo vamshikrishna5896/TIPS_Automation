@@ -6,7 +6,7 @@ class Policycreation:
     def __init__(self, page):
         self.page = page
 
-    def create_personal_accident_quote(self,mykad,customer_name, date_type="today"):
+    def create_personal_accident_quote(self,mykad,customer_name,date_type):
         #select product
         self.page.get_by_role("heading",name="Personal Accident, Travel & Health").click()
         # select product type PA
@@ -23,6 +23,10 @@ class Policycreation:
         self.page.get_by_role("option",name="Class 2").click()
         # Select Occupation
         self.page.locator(".mat-select-placeholder").click()
+
+        # Coverage Type
+        # self.page.locator(":text-is('PA Shield')").click()
+        # self.page.locator(":text-is('Personal Accident Safe')").click()
         #Select Sum Insured
         self.page.get_by_role("option", name="200,000").click()
         self.page.wait_for_timeout(2000)
@@ -33,15 +37,12 @@ class Policycreation:
         #self.page.locator("#mat-radio-9-input").check()
         #self.page.locator("#dx-checkbox-1 > .mat-checkbox-layout > .mat-checkbox-inner-container").click()
 
-        def select_inception_date(self, date_type):
+        # Open Calendar
+        self.page.get_by_label("Open calendar").last.click(force=True)
+        self.page.wait_for_timeout(2000)
 
-            # Click calendar icon
-            self.page.get_by_label("Open calendar").last.click(force=True)
-
-            self.page.wait_for_timeout(2000)
-
-            # Select Today/Tomorrow
-            DatePicker.select_date(self.page,date_type)
+        # Select Today/Tomorrow
+        DatePicker.select_date(self.page,date_type)
         #check box
         self.page.locator("dx-label.fw-medium.declaration-text.d-inline-block.text-wrap").click()
         #Save & next button
@@ -85,7 +86,7 @@ class Policycreation:
         self.page.get_by_text("We respect your privacy and").click()
         self.page.get_by_text("I hereby confirm that I have").click()
         self.page.get_by_role("button", name="Generate Quote").click()
-        self.page.wait_for_timeout(4000)
+        self.page.wait_for_timeout(6000)
         self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
         self.page.locator("form").get_by_text("Download Quote & PDS Documents").click()
         self.page.wait_for_timeout(4000)
@@ -94,13 +95,21 @@ class Policycreation:
         self.page.get_by_text("close").click()
         self.page.get_by_role("button", name="Issue Policy").click()
         self.page.get_by_role("button", name="Accept & Proceed").click()
-        self.page.wait_for_timeout(18000)
+        self.page.wait_for_timeout(20000)
         #------Print Quote Number-------#
         quote_text = self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text()
         quote_number = quote_text.strip()
         print("Quote Number:", quote_number)
-        # ---- Printing the policy number ----#
-        self.page.policy_locator = self.page.locator("text=Policy #:")
-        policy_text = self.page.policy_locator.text_content()
-        policy_number = policy_text.replace("Policy #:", "").strip()
-        print("Policy Number:", policy_number)
+
+        # ------Print Policy Number-------#
+        def get_policy_number(self):
+
+            self.page.wait_for_timeout(5000)
+
+            policy_text = self.page.locator("text=Policy #:").text_content()
+
+            policy_number = policy_text.replace("Policy #:","").strip()
+
+            print("Policy Number:", policy_number)
+
+            return policy_number

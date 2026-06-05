@@ -12,6 +12,9 @@ class DatePicker:
         elif option.lower() == "tomorrow":
             return datetime.today() + timedelta(days=1)
 
+        elif option.lower() == "after_5_days":
+            return datetime.today() + timedelta(days=5)
+
         else:
             raise Exception("Invalid date option")
 
@@ -26,8 +29,4 @@ class DatePicker:
 
         page.wait_for_timeout(2000)
 
-        page.get_by_role(
-            "button",
-            name=day,
-            exact=True
-        ).click(force=True)
+        page.get_by_role("button",name=day,exact=True).click(force=True)

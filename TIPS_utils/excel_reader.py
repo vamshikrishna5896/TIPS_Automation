@@ -1,20 +1,30 @@
 from openpyxl import load_workbook
 from pathlib import Path
 
+
 class ExcelReader:
 
     @staticmethod
-    def get_test_data():
+    def get_test_data(sheet_name):
 
         project_root = Path(__file__).parent.parent
 
-        excel_file = (project_root/ "testdata_excel"/ "test_data.xlsx")
+        excel_file = (
+            project_root
+            / "testdata_excel"
+            / "test_data.xlsx"
+        )
 
         workbook = load_workbook(excel_file)
 
-        print(workbook.sheetnames)
+        print("Available Sheets:", workbook.sheetnames)
 
-        sheet = workbook["Sheet1"]
+        sheet = workbook[sheet_name]
+
+        headers = []
+
+        for cell in sheet[1]:
+            headers.append(cell.value)
 
         data = []
 
@@ -22,9 +32,11 @@ class ExcelReader:
                 min_row=2,
                 values_only=True):
 
-            data.append({
-                "mykad": str(row[0]),
-                "name": row[1]
-            })
+            row_data = {}
+
+            for header, value in zip(headers, row):
+                row_data[header] = value
+
+            data.append(row_data)
 
         return data
