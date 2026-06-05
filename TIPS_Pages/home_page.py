@@ -11,7 +11,10 @@ class HomePage:
 
         self.page.get_by_role("button",name="New Quote").click(timeout=60000)
 
-        def navigate_to_endorsement(self):
-            self.page.get_by_text("approval Policy Servicing").click()
+    def navigate_to_endorsement(self):
 
-            self.page.wait_for_timeout(3000)
+        self.page.wait_for_load_state("networkidle")
+
+        self.page.get_by_text("approval Policy Servicing").click(timeout=60000)
+
+        self.page.wait_for_timeout(3000)

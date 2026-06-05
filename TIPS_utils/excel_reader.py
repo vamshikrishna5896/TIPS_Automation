@@ -9,15 +9,9 @@ class ExcelReader:
 
         project_root = Path(__file__).parent.parent
 
-        excel_file = (
-            project_root
-            / "testdata_excel"
-            / "test_data.xlsx"
-        )
+        excel_file = (project_root /"testdata_excel" /"test_data.xlsx")
 
         workbook = load_workbook(excel_file)
-
-        print("Available Sheets:", workbook.sheetnames)
 
         sheet = workbook[sheet_name]
 
@@ -28,9 +22,7 @@ class ExcelReader:
 
         data = []
 
-        for row in sheet.iter_rows(
-                min_row=2,
-                values_only=True):
+        for row in sheet.iter_rows(min_row=2,values_only=True):
 
             row_data = {}
 
