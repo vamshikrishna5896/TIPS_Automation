@@ -1,5 +1,5 @@
 import allure
-
+from TIPS_utils.date_picker import DatePicker
 
 class DentalPolicyPage:
 
@@ -7,7 +7,7 @@ class DentalPolicyPage:
         self.page = page
 
     #@allure.step("Create Dental Policy")
-    def create_dental_policy(self,mykad,customer_name):
+    def create_dental_policy(self,mykad,customer_name,date_type):
 
         # Product Category
         self.page.get_by_role("heading",name="Personal Accident, Travel & Health").click()
@@ -24,18 +24,15 @@ class DentalPolicyPage:
 
         # Name
         self.page.locator("mat-form-field").filter(has_text="Name as per ID").locator("#dx-input-1").fill(customer_name)
+        self.page.wait_for_timeout(1000)
         #calender
-
-        # self.page.get_by_label(
-        #     "Open calendar"
-        # ).last.click(force=True)
-        #
-        # self.page.wait_for_timeout(2000)
-        #
-        # DatePicker.select_date(
-        #     self.page,
-        #     date_type
-        # )
+        #self.page.pause()
+        # ------Inception Date Calendar---------#
+        #self.page.locator("mat-form-field").filter(has_text="Inception Date").get_by_label("Open calendar").click()
+        self.page.locator("mat-form-field").filter(has_text="Start Date event").get_by_label("Open calendar").click()
+        self.page.wait_for_timeout(1000)
+        # Select Date
+        DatePicker.select_date(self.page,date_type)
 
         # Declaration
         self.page.get_by_text("The Proposer/Person(s) to be").click()
@@ -43,22 +40,37 @@ class DentalPolicyPage:
         # Proceed
         self.page.get_by_role("button",name="Proceed Quote").click()
 
-        self.page.wait_for_timeout(9000)
+        self.page.wait_for_timeout(6000)
+        try:
+            self.page.get_by_role("button",name="Add").click(timeout=3000)
+
+            print("Add button found")
+
+        except:
+            print("Add button not found")
 
         # State
         self.page.locator(".mat-select-placeholder").first.click()
-
         self.page.locator("#mat-option-19").click()
+        self.page.wait_for_timeout(2000)
 
         # Postcode
         self.page.locator(".mat-select-placeholder").click()
 
         self.page.locator(".item").first.click()
+        self.page.wait_for_timeout(2000)
 
         # Address
         self.page.get_by_role("combobox",name="Address Line").click()
 
         self.page.get_by_text("DYMM Sultan Kedah").click()
+        self.page.wait_for_timeout(2000)
+        # save button
+        try:
+            self.page.get_by_role("button",name="Save").click(timeout=2000)
+
+        except:
+            print("Save button not found")
 
         # Tax ID
         self.page.get_by_role("textbox",name="123456789").fill("123654789")
@@ -79,22 +91,19 @@ class DentalPolicyPage:
 
         self.page.wait_for_timeout(2000)
 
-        try:
-            self.page.get_by_role("button",name="Send").click()
-        except:
-            pass
+        self.page.get_by_role("button",name="Send").click()
 
-        try:
-            self.page.get_by_text("close").click()
-        except:
-            pass
+        self.page.wait_for_timeout(2000)
+
+        self.page.get_by_text("close").click()
+        self.page.wait_for_timeout(2000)
 
         # Issue Policy
         self.page.get_by_role("button",name="Issue Policy").click()
 
         self.page.get_by_role("button",name="Accept & Proceed").click()
 
-        self.page.wait_for_timeout(18000)
+        self.page.wait_for_timeout(25000)
 
     def get_policy_number(self):
 

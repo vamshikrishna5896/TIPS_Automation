@@ -8,23 +8,16 @@ from TIPS_Pages.login_page import LoginPage
 from TIPS_Pages.logout_page import LogoutPage
 
 
-# ==========================================
-# PAGE FIXTURE
-# ==========================================
+# ============== PAGE FIXTURE =====================#
 
 @pytest.fixture(scope="function")
 def page(request):
 
     playwright = sync_playwright().start()
 
-    browser = playwright.firefox.launch(
-        headless=False,
-        args=["--start-maximized"]
-    )
+    browser = playwright.firefox.launch(headless=False,args=["--start-maximized"])
 
-    context = browser.new_context(
-        viewport=None
-    )
+    context = browser.new_context(viewport=None)
 
     # Start Playwright Trace
     # context.tracing.start(
@@ -44,10 +37,7 @@ def page(request):
     )
 
     try:
-        page.wait_for_load_state(
-            "networkidle",
-            timeout=60000
-        )
+        page.wait_for_load_state("networkidle",timeout=60000)
     except Exception:
         pass
 
@@ -62,20 +52,14 @@ def page(request):
 
             if request.node.rep_call.failed:
 
-                os.makedirs(
-                    "traces",
-                    exist_ok=True
-                )
-
-                context.tracing.stop(
-                    path=f"traces/{request.node.name}.zip"
-                )
-
-                print("Trace Saved")
-
-            else:
-
-                context.tracing.stop()
+                os.makedirs("traces",exist_ok=True)
+                # Stop of trace
+                # context.tracing.stop(path=f"traces/{request.node.name}.zip")
+                #
+                # print("Trace Saved")
+            #
+            # else:
+            #     context.tracing.stop()
 
     except Exception as e:
 
@@ -133,12 +117,7 @@ def pytest_runtest_makereport(item, call):
 
     report = outcome.get_result()
 
-    setattr(
-        item,
-        "rep_" + report.when,
-        report
-    )
-
+    setattr(item,"rep_" + report.when,report)
 
 # ==========================================
 # SCREENSHOT ON FAILURE
@@ -153,24 +132,12 @@ def screenshot_on_failure(request, page):
 
         if request.node.rep_call.failed:
 
-            os.makedirs(
-                "screenshots",
-                exist_ok=True
-            )
+            os.makedirs("screenshots",exist_ok=True)
 
-            screenshot_path = (
-                f"screenshots/{request.node.name}.png"
-            )
+            screenshot_path = (f"screenshots/{request.node.name}.png")
 
-            page.screenshot(
-                path=screenshot_path,
-                full_page=True
-            )
+            page.screenshot(path=screenshot_path,full_page=True)
 
-            allure.attach.file(
-                screenshot_path,
-                name="Failure Screenshot",
-                attachment_type=allure.attachment_type.PNG
-            )
+            allure.attach.file(screenshot_path,name="Failure Screenshot",attachment_type=allure.attachment_type.PNG)
 
             print("Screenshot Captured")

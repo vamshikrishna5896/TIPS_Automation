@@ -12,6 +12,9 @@ class DatePicker:
         elif option.lower() == "tomorrow":
             return datetime.today() + timedelta(days=1)
 
+        elif option.lower() == "day_after_tomorrow":
+            return datetime.today() + timedelta(days=2)
+
         elif option.lower() == "after_5_days":
             return datetime.today() + timedelta(days=5)
 
@@ -23,10 +26,15 @@ class DatePicker:
 
         required_date = DatePicker.get_date(option)
 
-        day = str(required_date.day)
+        print(f"Selecting Date: {required_date}")
 
-        print(f"Selecting Day = {day}")
+        # Angular Material calendar format
+        aria_date = required_date.strftime("%B %d, %Y").replace(" 0", " ")
+
+        print(f"Aria Date: {aria_date}")
 
         page.wait_for_timeout(2000)
 
-        page.get_by_role("button",name=day,exact=True).click(force=True)
+        page.get_by_role("gridcell", name=aria_date).click(force=True)
+
+        print(f"Selected Date: {required_date.strftime('%d-%m-%Y')}")

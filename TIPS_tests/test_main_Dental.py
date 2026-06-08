@@ -7,7 +7,7 @@ from TIPS_utils.excel_reader import ExcelReader
 from TIPS_utils.excel_writer import ExcelWriter
 
 
-test_data = ExcelReader.get_test_data("Sheet2")
+test_data = ExcelReader.get_test_data("Dental")
 
 
 # @allure.epic("Dental Insurance")
@@ -25,11 +25,11 @@ def test_create_dental_policy(page,data):
 
     home.navigate_to_new_quote()
 
-    dental.create_dental_policy(mykad=str(data["MyKadID"]),customer_name=data["Name"])
+    dental.create_dental_policy(mykad=str(data["MyKadID"]),customer_name=data["Name"], date_type="today")
 
     policy_number = dental.get_policy_number()
 
-    ExcelWriter.update_policy_number("Sheet2",str(data["MyKadID"]),policy_number)
+    ExcelWriter.update_policy_number("Dental",str(data["MyKadID"]),policy_number)
 
     print(f"MyKad : {data['MyKadID']}")
 
