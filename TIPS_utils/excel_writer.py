@@ -5,67 +5,80 @@ from pathlib import Path
 class ExcelWriter:
 
     # =====================================
-    # PA & Dental Policy Number Update
-    # Sheet1 -> PA
-    # Sheet2 -> Dental
+    # Dental Policy Update
     # Match using MyKadID
+    # Policy Number -> Column 3
     # =====================================
     @staticmethod
-    def update_policy_number(
-            sheet_name,
-            mykad,
-            policy_number):
+    def update_dental_policy_number(sheet_name, mykad, policy_number):
 
         project_root = Path(__file__).parent.parent
-
-        excel_file = (project_root /"testdata_excel" /"test_data.xlsx")
+        excel_file = project_root / "testdata_excel" / "test_data.xlsx"
 
         workbook = load_workbook(excel_file)
-
         sheet = workbook[sheet_name]
 
         for row in range(2, sheet.max_row + 1):
 
-            excel_mykad = str(sheet.cell(row=row,column=1).value)
+            excel_mykad = str(sheet.cell(row=row, column=1).value)
 
             if excel_mykad == str(mykad):
 
-                # Column 3 = Policy Number
-                sheet.cell(row=row,column=3).value = policy_number
-
+                sheet.cell(row=row, column=3).value = policy_number
                 break
 
         workbook.save(excel_file)
 
-        print(f"Policy Number {policy_number} "f"updated successfully")
+        print(f"Dental Policy Number {policy_number} updated successfully in {sheet_name}")
 
     # =====================================
-    # Motor Policy Number Update
-    # Sheet3 -> Motor
-    # Match using RegNo
+    # PA Endorsement / Correction
+    # Policy Number -> Column 1
+    # First Empty Row
     # =====================================
     @staticmethod
-    def update_motor_policy_number(sheet_name,reg_no,policy_number):
+    def update_pa_policy_number(sheet_name, policy_number):
 
         project_root = Path(__file__).parent.parent
-
-        excel_file = (project_root /"testdata_excel" /"test_data.xlsx")
+        excel_file = project_root / "testdata_excel" / "test_data.xlsx"
 
         workbook = load_workbook(excel_file)
+        sheet = workbook[sheet_name]
 
+        for row in range(2, sheet.max_row + 2):
+
+            if sheet.cell(row=row, column=1).value in [None, ""]:
+
+                sheet.cell(row=row, column=1).value = policy_number
+                break
+
+        workbook.save(excel_file)
+
+        print(f"PA Policy Number {policy_number} updated successfully in {sheet_name}")
+
+    # =====================================
+    # Motor Policy Update
+    # Match using Reg No
+    # Policy Number -> Column 5
+    # =====================================
+    @staticmethod
+    def update_motor_policy_number(sheet_name, reg_no, policy_number):
+
+        project_root = Path(__file__).parent.parent
+        excel_file = project_root / "testdata_excel" / "test_data.xlsx"
+
+        workbook = load_workbook(excel_file)
         sheet = workbook[sheet_name]
 
         for row in range(2, sheet.max_row + 1):
 
-            excel_reg_no = str(sheet.cell(row=row,column=1).value)
+            excel_reg_no = str(sheet.cell(row=row, column=1).value)
 
             if excel_reg_no == str(reg_no):
 
-                # Column 4 = Policy Number
-                sheet.cell(row=row,column=4).value = policy_number
-
+                sheet.cell(row=row, column=5).value = policy_number
                 break
 
         workbook.save(excel_file)
 
-        print(f"Motor Policy Number "f"{policy_number} "f"updated successfully")
+        print(f"Motor Policy Number {policy_number} updated successfully")

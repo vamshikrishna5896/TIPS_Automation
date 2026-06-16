@@ -15,9 +15,9 @@ def page(request):
 
     playwright = sync_playwright().start()
 
-    browser = playwright.firefox.launch(headless=False,args=["--start-maximized"])
+    browser = playwright.chromium.launch(headless=False,args=["--start-maximized"])
 
-    context = browser.new_context(viewport=None)
+    context = browser.new_context(no_viewport=True)
 
     # Start Playwright Trace
     # context.tracing.start(
@@ -29,12 +29,7 @@ def page(request):
     page = context.new_page()
 
     # Login
-    login = LoginPage(page)
-
-    login.login(
-        "playwright.test@serole.com",
-        "Serole@321"
-    )
+    login = LoginPage(page); login.login("playwright.test@serole.com", "Serole@321")
 
     try:
         page.wait_for_load_state("networkidle",timeout=60000)

@@ -8,7 +8,7 @@ class Policycreation:
         self.page = page
 
    # @allure.step("Create Personal Accident Policy")
-    def create_personal_accident_quote(self, mykad, customer_name, date_type):
+    def create_personal_accident_quote(self, mykad, customer_name, date_type, product_type):
 
         # Select Product Category
         self.page.get_by_role("heading",name="Personal Accident, Travel & Health").click()
@@ -24,17 +24,28 @@ class Policycreation:
         # Customer Name
         self.page.locator("mat-form-field").filter(has_text="Name as per ID *").locator("#dx-input-1").fill(customer_name)
 
-        # Class
+        # Occupation Class
         self.page.locator(".mat-select-placeholder").first.click()
+        self.page.get_by_role("option", name="Class 2").click()
 
-        self.page.get_by_role("option",name="Class 2").click()
+        # Product Type
+        self.page.locator("#mat-select-value-17").click()
+        self.page.get_by_role("option", name=product_type).click()
 
-        # Occupation Dropdown
+        self.page.wait_for_timeout(2000)
+
+        # Sum Insured based on Product Type
         self.page.locator(".mat-select-placeholder").click()
 
-        # Sum Insured
-        self.page.get_by_role("option",name="200,000").click()
+        if product_type == "Personal Accident Safe":
+            self.page.get_by_role("option", name="50,000", exact=True).click()
+            print("Selected Product: PA Safe")
+            print("Selected Sum Insured: 50,000")
 
+        else:  # Default = PA Shield
+            self.page.get_by_role("option", name="200,000").click()
+            print("Selected Product: PA Shield")
+            print("Selected Sum Insured: 200,000")
         self.page.wait_for_timeout(2000)
 
         # Weekly Benefit = No
@@ -52,7 +63,7 @@ class Policycreation:
         # Save & Next
         self.page.get_by_text("Save & Next",exact=True).click()
 
-        self.page.wait_for_timeout(10000)
+        self.page.wait_for_timeout(14000)
 
         # =============================
         # Add Proposer (Optional)
@@ -89,11 +100,11 @@ class Policycreation:
         except:
             print("Save button not found")
 
-        # Tax ID
+        # Phone number
         self.page.get_by_role("textbox",name="123456789").fill("123654789")
 
         # Email
-        self.page.get_by_role("textbox",name="Enter").fill("sai@gmail.com")
+        self.page.get_by_role("textbox",name="Enter").fill("vamshikrishna45@gmail.com")
 
         # UW writer Questions  #
         self.page.locator("#mat-radio-16-input").check()
@@ -114,6 +125,7 @@ class Policycreation:
 
         # Download Quote
         self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
+        self.page.wait_for_timeout(1000)
         self.page.locator("form").get_by_text("Download Quote & PDS Documents").click()
 
         self.page.get_by_role("button",name="Download").click()
@@ -143,7 +155,7 @@ class Policycreation:
         except:
             print("Quote Number not found")
 
-    @allure.step("Get Policy Number")
+    #@allure.step("Get Policy Number")
     def get_policy_number(self):
 
         self.page.wait_for_timeout(5000)

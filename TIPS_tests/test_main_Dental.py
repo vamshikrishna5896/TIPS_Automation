@@ -6,9 +6,7 @@ from TIPS_Pages.Dental_NB_policy_page import DentalPolicyPage
 from TIPS_utils.excel_reader import ExcelReader
 from TIPS_utils.excel_writer import ExcelWriter
 
-
 test_data = ExcelReader.get_test_data("Dental")
-
 
 # @allure.epic("Dental Insurance")
 # @allure.feature("Dental Shield")
@@ -29,7 +27,7 @@ def test_create_dental_policy(page,data):
 
     policy_number = dental.get_policy_number()
 
-    ExcelWriter.update_policy_number("Dental",str(data["MyKadID"]),policy_number)
+    ExcelWriter.update_dental_policy_number("Dental",str(data["MyKadID"]),policy_number)
 
     print(f"MyKad : {data['MyKadID']}")
 

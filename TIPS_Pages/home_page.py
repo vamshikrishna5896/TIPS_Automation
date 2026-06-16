@@ -13,7 +13,7 @@ class HomePage:
         # Reload page
         #self.page.reload()
 
-    def navigate_to_endorsement(self):
+    def navigate_to_correctionandEndo(self):
 
         self.page.wait_for_load_state("networkidle")
 

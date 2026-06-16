@@ -2,7 +2,7 @@ import pytest
 import allure
 
 from TIPS_Pages.home_page import HomePage
-from TIPS_Pages.PC_NB_policy import MotorPCPage
+from TIPS_Pages.PC_NB_policy_page import MotorPCPage
 from TIPS_utils.excel_reader import ExcelReader
 from TIPS_utils.excel_writer import ExcelWriter
 
