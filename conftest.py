@@ -77,15 +77,17 @@ def page(request):
     try:
 
         context.close()
+        print("Browser Close Successful")
 
     except Exception as e:
 
         print(f"Context Close Error: {e}")
 
-    # Close Browser
+    # =============Close Browser ============= #
     try:
 
         browser.close()
+        print("Browser Close Successful")
 
     except Exception as e:
 

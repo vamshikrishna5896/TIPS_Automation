@@ -23,10 +23,14 @@ class Policycreation:
 
         # Customer Name
         self.page.locator("mat-form-field").filter(has_text="Name as per ID *").locator("#dx-input-1").fill(customer_name)
+        self.page.wait_for_timeout(2000)
+        #self.page.pause()
 
         # Occupation Class
         self.page.locator(".mat-select-placeholder").first.click()
-        self.page.get_by_role("option", name="Class 2").click()
+        self.page.get_by_role("option", name="Class 1").click()
+        # self.page.get_by_role("option", name="Class 2").click()
+        # self.page.get_by_role("option", name="Class 3").click()
 
         # Product Type
         self.page.locator("#mat-select-value-17").click()
@@ -50,6 +54,14 @@ class Policycreation:
 
         # Weekly Benefit = No
         self.page.locator("mat-radio-button:has-text('No')").nth(1).click()
+        #self.page.pause()
+        # ====== Renewal Bonus  ====== #
+        # self.page.locator(".mat-slide-toggle-bar").click()
+        # self.page.get_by_role("spinbutton").click()
+        # self.page.get_by_role("spinbutton").fill("20")
+        # self.page.wait_for_timeout(2000)
+        # self.page.locator(".mat-select-placeholder").click()
+        # self.page.get_by_role("option", name="AIG Malaysia Insurance Berhad").click()
 
         # ------Inception Date Calendar---------#
         self.page.locator("mat-form-field").filter(has_text="Inception Date").get_by_label("Open calendar").click()
@@ -106,6 +118,10 @@ class Policycreation:
         # Email
         self.page.get_by_role("textbox",name="Enter").fill("vamshikrishna45@gmail.com")
 
+        #======  Rebate percentage ====== #
+        # self.page.locator("mat-form-field").filter(has_text="Rebate to Proposer%").locator("#rebate").click()
+        # self.page.locator("mat-form-field").filter(has_text="Rebate to Proposer%").locator("#rebate").fill("25")
+
         # UW writer Questions  #
         self.page.locator("#mat-radio-16-input").check()
         self.page.locator("#mat-radio-18-input").check()
@@ -115,7 +131,6 @@ class Policycreation:
 
         # Privacy
         self.page.get_by_text("We respect your privacy and").click()
-
         self.page.get_by_text("I hereby confirm that I have").click()
 
         # Generate Quote
@@ -150,7 +165,7 @@ class Policycreation:
         try:
             quote_number = self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text()
 
-            print(f"Quote Number : {quote_number.strip()}")
+            #print(f"Quote Number : {quote_number.strip()}")
 
         except:
             print("Quote Number not found")
@@ -165,7 +180,7 @@ class Policycreation:
 
             policy_number = (policy_text.replace("Policy #:", "").strip())
 
-            print(f"Policy Number : {policy_number}")
+            #print(f"Policy Number : {policy_number}")
 
             return policy_number
 

@@ -9,8 +9,9 @@ from TIPS_utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("PA")
 
-@pytest.mark.parametrize("data", [test_data[0]])
-
+@pytest.mark.parametrize("data", [test_data[2]])    # ========>  If want Run only first row from Excel
+#@pytest.mark.parametrize("data", test_data[1:5])   # =========> If want to Run 1 to 5 Rows in Excel
+#@pytest.mark.parametrize("data",test_data)
 def test_create_quote(page, data):
 
     home = HomePage(page)
@@ -19,9 +20,7 @@ def test_create_quote(page, data):
 
     home.navigate_to_new_quote()
 
-    # =====================================
-    # Date Type
-    # =====================================
+    # ===================================== Date Type  =====================================#
     date_type = "tomorrow"
 
     quote.create_personal_accident_quote(mykad=str(data["MyKadID"]), customer_name=data["Name"],

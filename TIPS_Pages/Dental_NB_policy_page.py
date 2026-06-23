@@ -24,7 +24,7 @@ class DentalPolicyPage:
 
         # Name
         self.page.locator("mat-form-field").filter(has_text="Name as per ID").locator("#dx-input-1").fill(customer_name)
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(3000)
         #calender
         #self.page.pause()
         # ------Inception Date Calendar---------#
@@ -48,11 +48,14 @@ class DentalPolicyPage:
 
         except:
             print("Add button not found")
+
         #self.page.pause()
         self.page.locator(".mat-select-placeholder").first.click()
         self.page.get_by_role("option", name="Kedah").click()
+        self.page.wait_for_timeout(2000)
         self.page.locator(".mat-select-placeholder").click()
         self.page.get_by_role("option", name="05500").click()
+        self.page.wait_for_timeout(2000)
         self.page.get_by_role("combobox", name="Address Line").click()
         self.page.get_by_text("DYMM Sultan Kedah").click()
 
@@ -82,8 +85,8 @@ class DentalPolicyPage:
         # Email
         self.page.get_by_role("textbox",name="Enter").fill("vamshi@gmail.com")
         #Declartions
-        #self.page.locator("mat-label.subbody").locator("dx-label").nth(1).click()
-        self.page.get_by_text("We respect your privacy and").click()
+        self.page.locator("#dx-checkbox-4 > .mat-checkbox-layout > .mat-checkbox-inner-container").click()
+        #self.page.get_by_text("We respect your privacy and").click()
 
         self.page.get_by_text("I hereby confirm that I have").click()
 
@@ -113,12 +116,16 @@ class DentalPolicyPage:
 
         self.page.wait_for_timeout(15000)
 
+    def get_quote_number(self):
+
+        quote_number = (self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
+
+        return quote_number
+
     def get_policy_number(self):
 
         self.page.wait_for_timeout(5000)
 
         policy_number = (self.page.locator("text=Policy #").locator("xpath=following::span[contains(@class,'ng-star-inserted')][1]").inner_text().strip())
-
-        print(f"Policy Number : {policy_number}")
 
         return policy_number

@@ -258,6 +258,17 @@ class CVPolicyPage:
             self.page.get_by_role("button", name="Issue Policy").click()
 
             self.page.wait_for_timeout(25000)
+
+    # ====================================
+    # GET QUOTE NUMBER
+    # ====================================
+    def get_quote_number(self):
+
+        quote_number = (self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
+
+        print(f"Quote Number : {quote_number}")
+
+        return quote_number
     # ====================================
     # GET POLICY NUMBER
     # ====================================

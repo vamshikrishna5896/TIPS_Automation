@@ -25,13 +25,18 @@ def test_create_dental_policy(page,data):
 
     dental.create_dental_policy(mykad=str(data["MyKadID"]),customer_name=data["Name"], date_type="today")
 
+    # Get Quote Number
+    quote_number = dental.get_quote_number()
+
     policy_number = dental.get_policy_number()
 
-    ExcelWriter.update_dental_policy_number("Dental",str(data["MyKadID"]),policy_number)
+    ExcelWriter.update_dental_policy_number("Dental",str(data["MyKadID"]),quote_number,policy_number)
 
     print(f"MyKad : {data['MyKadID']}")
 
     print(f"Name : {data['Name']}")
+
+    print(f"quote number : {quote_number}")
 
     print(f"Policy Number : {policy_number}")
 
