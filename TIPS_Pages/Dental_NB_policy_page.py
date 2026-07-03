@@ -1,5 +1,6 @@
 import allure
 from TIPS_utils.date_picker import DatePicker
+from TIPS_utils.policy_summary import PolicySummary
 
 class DentalPolicyPage:
 
@@ -49,29 +50,32 @@ class DentalPolicyPage:
         except:
             print("Add button not found")
 
-        #self.page.pause()
-        self.page.locator(".mat-select-placeholder").first.click()
-        self.page.get_by_role("option", name="Kedah").click()
-        self.page.wait_for_timeout(2000)
-        self.page.locator(".mat-select-placeholder").click()
-        self.page.get_by_role("option", name="05500").click()
-        self.page.wait_for_timeout(2000)
-        self.page.get_by_role("combobox", name="Address Line").click()
-        self.page.get_by_text("DYMM Sultan Kedah").click()
 
-        # State
         # self.page.locator(".mat-select-placeholder").first.click()
-        # self.page.get_by_role("option", name="Johor").click()
+        # self.page.get_by_role("option", name="Kedah").click()
         # self.page.wait_for_timeout(2000)
-        # # Postcode
         # self.page.locator(".mat-select-placeholder").click()
-        # self.page.get_by_role("option", name="81100").click()
+        # self.page.get_by_role("option", name="05500").click()
         # self.page.wait_for_timeout(2000)
-        #
-        # # Address
         # self.page.get_by_role("combobox", name="Address Line").click()
-        # self.page.get_by_text("Desa Harmoni", exact=True).click()
-        # self.page.wait_for_timeout(2000)
+        # self.page.get_by_text("DYMM Sultan Kedah").click()
+
+            # State
+        self.page.locator(".mat-select-placeholder").first.click()
+
+        self.page.get_by_role("option", name="Johor").click()
+        self.page.wait_for_timeout(2000)
+            # Postcode
+        self.page.locator(".mat-select-placeholder").click()
+
+        self.page.get_by_role("option", name="81100").click()
+        self.page.wait_for_timeout(2000)
+
+         # Address
+        self.page.get_by_role("combobox", name="Address Line").click()
+
+        self.page.get_by_text("Desa Harmoni", exact=True).click()
+        self.page.wait_for_timeout(2000)
 
         try:
             self.page.get_by_role("button", name="Save").click(timeout=2000)
@@ -114,18 +118,9 @@ class DentalPolicyPage:
 
         self.page.get_by_role("button",name="Accept & Proceed").click()
 
-        self.page.wait_for_timeout(15000)
+        self.page.wait_for_timeout(19000)
 
-    def get_quote_number(self):
+        # ======= Printing Dental details in excel============#
+        policy_details = PolicySummary.dental_policy_summary(self.page)
+        return policy_details
 
-        quote_number = (self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
-
-        return quote_number
-
-    def get_policy_number(self):
-
-        self.page.wait_for_timeout(5000)
-
-        policy_number = (self.page.locator("text=Policy #").locator("xpath=following::span[contains(@class,'ng-star-inserted')][1]").inner_text().strip())
-
-        return policy_number

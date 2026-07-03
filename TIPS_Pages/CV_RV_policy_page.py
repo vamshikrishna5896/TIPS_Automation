@@ -1,6 +1,8 @@
 import allure
 from datetime import datetime, timedelta
 from TIPS_utils.date_picker import DatePicker
+from TIPS_Pages.extensions_PC_MC_CV import CVExtensions
+from TIPS_utils.policy_summary import PolicySummary
 
 class CVPolicyPage:
 
@@ -43,7 +45,7 @@ class CVPolicyPage:
         self.page.locator("mat-form-field").filter(has_text="Chassis # *").locator("#chassisNo").click()
         self.page.locator("mat-form-field").filter(has_text="Chassis # *").locator("#chassisNo").fill("84562125555")
 
-        # Make
+        # ====== Make  ======= #
         self.page.locator(".mat-select-placeholder").nth(2).click()
         self.page.get_by_role("option", name="VOLVO").click()
         self.page.wait_for_timeout(1000)
@@ -85,7 +87,16 @@ class CVPolicyPage:
 
         self.page.wait_for_timeout(5000)
 
-        # =============================== COVER DETAILS  =============================== #
+        # ---- COVERAGE TYPE (read default) ----
+        selected_coverage = self.page.locator("#mat-select-value-31").inner_text().strip()
+        print("Selected Coverage type: ", selected_coverage)
+
+        #self.page.pause()
+
+        # ---- COVERAGE TYPE ----
+        self.page.locator("mat-select#coverageType").click()
+        self.page.get_by_role("option", name="Comprehensive").click()
+
 
         # ------Inception Date Calendar---------#
         self.page.locator("mat-form-field").filter(has_text="Inception Date").get_by_label("Open calendar").click()
@@ -93,9 +104,24 @@ class CVPolicyPage:
         # Select Date
         DatePicker.select_date(self.page, date_type)
 
-        self.page.wait_for_timeout(2000)
-
         self.page.get_by_role("region", name="Coverage").locator("input[type='text']").fill("25000")
+
+        # === Print of Selected Coverage =====#
+        selected_coverage = self.page.locator("#mat-select-value-31").inner_text().strip()
+        print("Selected Coverage type: ", selected_coverage)
+
+        # Save on self so it can be written to Excel column C later
+        self.selected_coverage = selected_coverage
+
+        # ====================== #
+        # Extensions coverages
+        # =====================  #
+        # if selected_coverage == "Comprehensive":
+        #     CVExtensions.comprehensive_extension(self.page)
+        # elif selected_coverage == "TP, Fire & Theft":
+        #     CVExtensions.tpft_extension(self.page)
+        # else:
+        #     print("Third Party selected")
 
         self.page.locator("mat-form-field").filter(has_text="Business Registration # *").locator("#id").fill(business_reg_no)
         #self.page.locator("#id").fill(business_reg_no)
@@ -135,9 +161,9 @@ class CVPolicyPage:
         except:
             print("Yes button not visible")
 
-        # ====================================
+        # ===========================================
         # IF NO POPUP FOUND → FILL PROPOSER DETAILS
-        # ====================================
+        # ===========================================
 
         if not popup_found:
 
@@ -174,7 +200,13 @@ class CVPolicyPage:
         else:
             print("Existing proposer details found. Skipping proposer details entry.")
 
-        # Declaration Checkbox
+            # ------ Policy Holder Name -------
+        ph_name = self.page.locator(".qms-canvas-card-title-wrapper .heading-6").first.inner_text().strip()
+        print("Policy Holder name:", ph_name)
+
+        self.ph_name = ph_name
+
+        # =========== Declaration Checkbox ===== #
         self.page.get_by_text("We respect your privacy and").click()
         self.page.get_by_text("I hereby confirm that I have").click()
 
@@ -257,32 +289,15 @@ class CVPolicyPage:
 
             self.page.get_by_role("button", name="Issue Policy").click()
 
-            self.page.wait_for_timeout(25000)
+            # Wait until Policy Number is displayed
+            self.page.locator("text=Policy #:").wait_for(state="visible", timeout=120000)
 
-    # ====================================
-    # GET QUOTE NUMBER
-    # ====================================
-    def get_quote_number(self):
+            # =============== Read Policy Summary from TIPS=============#
+            policy_details = PolicySummary.get_policy_summary(self.page)
 
-        quote_number = (self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
+            policy_details["Selected Coverage"] = self.selected_coverage
+            policy_details["Policy Holder"] = self.ph_name
 
-        print(f"Quote Number : {quote_number}")
-
-        return quote_number
-    # ====================================
-    # GET POLICY NUMBER
-    # ====================================
-
-    def get_policy_number(self):
-
-        self.page.wait_for_selector("text=Policy #:", timeout=120000)
-
-        policy_text = self.page.locator("text=Policy #:").text_content()
-
-        policy_number = (policy_text.replace("Policy #:", "").strip())
-
-        print(f"Policy Number : {policy_number}")
-
-        return policy_number
+            return policy_details
 
 

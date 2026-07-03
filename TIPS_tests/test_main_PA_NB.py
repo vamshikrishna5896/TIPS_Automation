@@ -9,7 +9,7 @@ from TIPS_utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("PA")
 
-@pytest.mark.parametrize("data", [test_data[2]])    # ========>  If want Run only first row from Excel
+@pytest.mark.parametrize("data", [test_data[0]])    # ========>  If want Run only first row from Excel
 #@pytest.mark.parametrize("data", test_data[1:5])   # =========> If want to Run 1 to 5 Rows in Excel
 #@pytest.mark.parametrize("data",test_data)
 def test_create_quote(page, data):
@@ -23,32 +23,30 @@ def test_create_quote(page, data):
     # ===================================== Date Type  =====================================#
     date_type = "tomorrow"
 
-    quote.create_personal_accident_quote(mykad=str(data["MyKadID"]), customer_name=data["Name"],
+    policy_details = quote.create_personal_accident_quote(mykad=str(data["MyKadID"]), customer_name=data["Name"],
                                          date_type=date_type, product_type=data["ProductType"])
-
-    # =====================================
-    # Get Policy Number
-    # =====================================
-    policy_number = quote.get_policy_number()
-
     # =====================================
     # Save Policy Number Based On Date Type
     # =====================================
 
     if date_type in ["today", "yesterday"]:
 
-        ExcelWriter.update_pa_policy_number("PA_Endo", policy_number)
+        ExcelWriter.update_pa_policy_details("PA", str(data["MyKadID"]), policy_details)
 
-        print("Policy saved in PA_Endo sheet")
+        print("Policy saved in PA sheet")
 
     elif date_type in ["tomorrow", "day_after_tomorrow"]:
 
-        ExcelWriter.update_pa_policy_number("PA_Correction", policy_number)
+        ExcelWriter.update_pa_policy_details("PA", str(data["MyKadID"]), policy_details)
 
+        print("Policy saved in PA sheet")
+
+        #ExcelWriter.update_pa_policy_details("PA_Correction",policy_details=policy_details )
         print("Policy saved in PA_Correction sheet")
 
     print(f"MyKad : {data['MyKadID']}")
     print(f"Name : {data['Name']}")
-    print(f"Policy Number : {policy_number}")
+    print(f"Quote Number   : {policy_details['Quote Number']}")
+    print(f"Policy Number  : {policy_details['Policy Number']}")
 
     assert True

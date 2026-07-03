@@ -1,6 +1,6 @@
 import allure
 from TIPS_utils.date_picker import DatePicker
-
+from TIPS_utils.policy_summary import PolicySummary
 
 class Policycreation:
 
@@ -157,35 +157,10 @@ class Policycreation:
 
         self.page.get_by_role("button",name="Accept & Proceed").click()
 
-        self.page.wait_for_timeout(30000)
-        # # Wait until policy number is generated
-        # self.page.locator("text=Policy #:").wait_for(state="visible", timeout=120000)
+        # Wait until Policy Number is displayed
+        self.page.wait_for_timeout(12000)
 
-        # Quote Number
-        try:
-            quote_number = self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text()
+        # ========= print PA details in excel ============#
+        policy_details = PolicySummary.pa_policy_summary(self.page)
 
-            #print(f"Quote Number : {quote_number.strip()}")
-
-        except:
-            print("Quote Number not found")
-
-    #@allure.step("Get Policy Number")
-    def get_policy_number(self):
-
-        self.page.wait_for_timeout(5000)
-
-        try:
-            policy_text = self.page.locator("text=Policy #:").text_content()
-
-            policy_number = (policy_text.replace("Policy #:", "").strip())
-
-            #print(f"Policy Number : {policy_number}")
-
-            return policy_number
-
-        except Exception as e:
-
-            print(f"Unable to fetch policy number: {e}")
-
-            return None
+        return policy_details

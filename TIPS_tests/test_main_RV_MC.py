@@ -13,7 +13,7 @@ test_data = ExcelReader.get_test_data("Motor_MC")
 # @allure.story("NB Policy")
 # @allure.title("Motor PC Policy Creation")
 
-@pytest.mark.parametrize("data",[test_data[2]])
+@pytest.mark.parametrize("data",[test_data[1]])
 
 def test_create_motor_policy(page,data):
 
@@ -23,25 +23,19 @@ def test_create_motor_policy(page,data):
 
     home.navigate_to_new_quote()
 
-    motor.create_motor_mc_policy(
+    policy_details = motor.create_motor_mc_policy(
         reg_no=str(data["RegNo"]),
         mykad=str(data["MyKadID"]),
         customer_name=data["Name"],
-        coverage_type=data["Coverage Type"],
         date_type="today")
 
-    # Get Quote Number
-    quote_number = motor.get_quote_number()
-
-    # get Policy Number
-    policy_number = motor.get_policy_number()
 
     # Update Quote Number & policy Number Column E & F
-    ExcelWriter.update_motor_mc_rv_policy_number("Motor_MC", str(data["RegNo"]), quote_number, policy_number)
+    ExcelWriter.update_motor_pc_mc_rv_details("Motor_MC", str(data["RegNo"]),policy_details=policy_details)
 
     print(f"Reg No : {data['RegNo']}")
     print(f"MyKad : {data['MyKadID']}")
-    print(f"Quote Number : {quote_number}")
-    print(f"Policy Number : {policy_number}")
+    print(f"Quote Number   : {policy_details['Quote Number']}")
+    print(f"Policy Number  : {policy_details['Policy Number']}")
 
     assert True

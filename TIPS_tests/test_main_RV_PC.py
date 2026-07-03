@@ -8,7 +8,7 @@ from TIPS_utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Motor_PC")
 
-@pytest.mark.parametrize("data",[test_data[3]])
+@pytest.mark.parametrize("data",[test_data[2]])
 
 def test_create_motor_policy(page, data):
 
@@ -18,21 +18,19 @@ def test_create_motor_policy(page, data):
 
     home.navigate_to_new_quote()
 
-    motor.create_motor_policy(reg_no=str(data["RegNo"]), mykad=str(data["MyKadID"]),
-        customer_name=data["Name"], coverage_type=data["Coverage Type"], date_type="today")
-
-    # Get Quote Number
-    quote_number = motor.get_quote_number()
-
-    # Get Policy Number
-    policy_number = motor.get_policy_number()
+    policy_details = motor.create_motor_policy(
+        reg_no=str(data["RegNo"]),
+        mykad=str(data["MyKadID"]),
+        customer_name=data["Name"],
+        date_type="today")
 
     # Update Quote Number in Column D
-    ExcelWriter.update_motor_pc_rv_quote_number("Motor_PC", str(data["RegNo"]), quote_number,policy_number)
+    ExcelWriter.update_motor_pc_mc_rv_details("Motor_PC", str(data["RegNo"]),policy_details=policy_details)
+
 
     print(f"Reg No : {data['RegNo']}")
     print(f"MyKad : {data['MyKadID']}")
-    print(f"Quote Number : {quote_number}")
-    print(f"Policy Number : {policy_number}")
+    print(f"Quote Number   : {policy_details['Quote Number']}")
+    print(f"Policy Number  : {policy_details['Policy Number']}")
 
     assert True
