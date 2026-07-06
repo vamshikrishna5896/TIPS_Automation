@@ -49,9 +49,7 @@ class ExcelWriter:
         workbook.save(excel_file)
         print("Policy Summary Updated")
     # =====================================
-    # PA Endorsement / Correction
-    # Policy Number -> Column 1
-    # First Empty Row
+    # Save details in PA Sheet
     # =====================================
     @staticmethod
     def update_pa_policy_details(sheet_name, mykad, policy_details):
@@ -97,6 +95,32 @@ class ExcelWriter:
         workbook.save(excel_file)
 
         print("Policy Summary Updated")
+
+    # =====================================
+    # PA Correction - Save Policy Number
+    # =====================================
+    @staticmethod
+    def update_pa_correction_policy_number(sheet_name, policy_number):
+
+        project_root = Path(__file__).parent.parent
+        excel_file = project_root / "testdata_excel" / "test_data.xlsx"
+
+        workbook = load_workbook(excel_file)
+        sheet = workbook[sheet_name]
+
+        # Find first empty row in Column A
+        for row in range(2, sheet.max_row + 2):
+
+            if sheet.cell(row=row, column=1).value in [None, ""]:
+                # Column A = Policy Number
+                sheet.cell(row=row, column=1).value = policy_number
+
+                break
+
+        workbook.save(excel_file)
+
+        print(f"Policy Number {policy_number} saved in {sheet_name}")
+
     # =====================================
     # PC_RV & MC_RV Motor details
     # =====================================

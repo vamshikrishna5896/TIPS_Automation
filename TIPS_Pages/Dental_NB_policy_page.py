@@ -1,4 +1,5 @@
 import allure
+import os
 from TIPS_utils.date_picker import DatePicker
 from TIPS_utils.policy_summary import PolicySummary
 
@@ -7,7 +8,7 @@ class DentalPolicyPage:
     def __init__(self, page):
         self.page = page
 
-    #@allure.step("Create Dental Policy")
+    @allure.step("Create Dental Policy")
     def create_dental_policy(self,mykad,customer_name,date_type):
 
         # Product Category
@@ -88,6 +89,7 @@ class DentalPolicyPage:
 
         # Email
         self.page.get_by_role("textbox",name="Enter").fill("vamshi@gmail.com")
+
         #Declartions
         self.page.locator("#dx-checkbox-4 > .mat-checkbox-layout > .mat-checkbox-inner-container").click()
         #self.page.get_by_text("We respect your privacy and").click()
@@ -99,26 +101,22 @@ class DentalPolicyPage:
         self.page.wait_for_timeout(8000)
 
         # Download Quote
-        self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
-        self.page.wait_for_timeout(1000)
-
-        self.page.get_by_label("Download Quote & PDS Documents", exact=True).click()
-        #self.page.get_by_label("Download Quote & PDS Documents").click()
-        self.page.wait_for_timeout(1000)
-
-        self.page.get_by_role("button",name="Send").click()
-
-        self.page.wait_for_timeout(2000)
-
-        self.page.get_by_text("close").click()
-        self.page.wait_for_timeout(2000)
+        if self.page.get_by_role("button", name="Download Quote & PDS Documents").is_visible():
+            self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
+            self.page.get_by_label("Download Quote & PDS Documents", exact=True).click()
+            with self.page.expect_download() as download_info:
+                self.page.get_by_role("button", name="Download").click()
+            download = download_info.value
+            download.save_as(os.path.join(r"Documents\Dental_quote.pdf"))
+            self.page.get_by_text("close").click()
+            print("Quote & PDF Downloaded successfully")
 
         # -----Issue Policy ------#
         self.page.get_by_role("button",name="Issue Policy").click()
 
         self.page.get_by_role("button",name="Accept & Proceed").click()
 
-        self.page.wait_for_timeout(19000)
+        self.page.wait_for_timeout(18000)
 
         # ======= Printing Dental details in excel============#
         policy_details = PolicySummary.dental_policy_summary(self.page)

@@ -8,12 +8,12 @@ from TIPS_utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Dental")
 
-# @allure.epic("Dental Insurance")
-# @allure.feature("Dental Shield")
-# @allure.story("Create New Policy")
-# @allure.title("Dental Policy Creation")
+@allure.epic("Dental Insurance")
+@allure.feature("Dental Shield")
+@allure.story("Create New Policy")
+@allure.title("Dental Policy Creation")
 
-@pytest.mark.parametrize("data",[test_data[0]])
+@pytest.mark.parametrize("data",[test_data[4]])
 
 def test_create_dental_policy(page,data):
 
@@ -30,5 +30,6 @@ def test_create_dental_policy(page,data):
 
     print(f"MyKad : {data['MyKadID']}")
     print(f"Name : {data['Name']}")
-
+    print(f"Quote Number   : {policy_details['Quote Number']}")
+    print(f"Policy Number  : {policy_details['Policy Number']}")
     assert True

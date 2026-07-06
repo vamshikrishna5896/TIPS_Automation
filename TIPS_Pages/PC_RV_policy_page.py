@@ -1,12 +1,10 @@
 import allure
-from datetime import datetime
 import os
 from TIPS_utils.date_picker import DatePicker
 from TIPS_utils.policy_summary import PolicySummary
 from TIPS_utils.excel_writer import ExcelWriter
 from decimal import Decimal, ROUND_CEILING
 from TIPS_Pages.extensions_PC_MC_CV import PCExtensions
-
 
 class MotorPCPage:
 
@@ -18,7 +16,7 @@ class MotorPCPage:
         Verify Sum Insured rounding after Agreed Value adjustment.
         Comment out this method call if verification is not required.
         """
-        # ---- MARKET VALUE ----
+        # ---- MARKET VALUE ----#
         market_value_text = (self.page.locator("mat-form-field").filter(has_text="Market Value").
                              locator("#ismMarketValue").input_value().strip())
 
@@ -70,12 +68,13 @@ class MotorPCPage:
         print("SI Verification Passed")
 
 
-   #@allure.step("Create Motor Policy")
+    @allure.step("Create Motor Policy")
     def create_motor_policy(self,reg_no,mykad,customer_name, date_type):
 
         # Motor Product
         self.page.get_by_role("heading",name="Motor").click()
 
+        # ====== Next button====#
         self.page.get_by_role("button",name="Next").click()
 
         # Vehicle Number
@@ -117,7 +116,10 @@ class MotorPCPage:
         # Save on self so it can be written to Excel column C later
         self.selected_coverage = selected_coverage
 
-        # ============================== #
+
+
+
+        # =============================== #
         # Extensions coverage selection
         # =============================== #
         # if selected_coverage == "Comprehensive":
@@ -126,6 +128,9 @@ class MotorPCPage:
         #     PCExtensions.tpft_extension(self.page)
         # else:
         #     print("Third Party selected")
+
+
+
 
         # =====================================================
         # Sum Insured
@@ -157,7 +162,7 @@ class MotorPCPage:
             print("Sum Insured was empty. Updated to 5000")
 
             self.page.wait_for_timeout(3000)
-            # """
+            #
             # # ---------- Agreed Value ----------
             # try:
             #
@@ -176,7 +181,7 @@ class MotorPCPage:
             # except Exception as e:
             #
             #     print(f"Agreed Value not available: {e}")
-            # """
+            #
 
         #--------------- MyKad ------------#
         self.page.locator("mat-form-field").filter(has_text="ID #").locator("#id").fill(mykad)
@@ -257,16 +262,12 @@ class MotorPCPage:
         self.page.get_by_text("I hereby confirm that I have").click()
         self.page.wait_for_timeout(2000)
 
-
-
         # =====================================================
         # "Upload Supporting documents later" checkbox
         # BEFORE Generate Quote is clicked.
         # =====================================================
         try:
-            upload_later = self.page.get_by_text("Upload Supporting documents later").locator(
-                "xpath=preceding-sibling::*[1]"
-            )
+            upload_later = self.page.get_by_text("Upload Supporting documents later").locator("xpath=preceding-sibling::*[1]")
 
             if upload_later.count() == 0:
                 upload_later = self.page.locator("#isUploadLater-desktop input[type='checkbox']")
@@ -291,10 +292,9 @@ class MotorPCPage:
             else:
                 print("Upload Supporting documents later checkbox not displayed")
 
-        except Exception as e:
-            print(f"Upload Later checkbox skipped: {e}")
+        except Exception:
+            print("Upload Later checkbox skipped")
 
-        self.page.wait_for_timeout(2000)
 
         # ---- GENERATE QUOTE ----#
         if self.page.get_by_role("button", name="Generate Quote").is_visible():
@@ -302,7 +302,7 @@ class MotorPCPage:
             with self.page.expect_download() as download_info:
                 self.page.get_by_role("button", name="Submit").click()
             download = download_info.value
-            download.save_as(os.path.join(r"Documents\PA_quote.pdf"))
+            download.save_as(os.path.join(r"Documents\PC_quote.pdf"))
             #self.page.get_by_text("close", exact=True).click()
             print("Quote PDF Generated successfully")
 
@@ -310,6 +310,7 @@ class MotorPCPage:
             pass
 
         self.page.wait_for_timeout(5000)
+
 
         # Get Quote Number from PolicySummary
         quote_number = (self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
@@ -396,7 +397,7 @@ class MotorPCPage:
         with self.page.expect_download() as download_info:
             self.page.get_by_role("button", name="Submit").click()
         download = download_info.value
-        download.save_as(os.path.join(r"Documents\PA_policy.pdf"))
+        download.save_as(os.path.join(r"Documents\PC_policy.pdf"))
         print("Schedule Letter PDF Generated successfully")
 
         # Wait until Policy Number is displayed

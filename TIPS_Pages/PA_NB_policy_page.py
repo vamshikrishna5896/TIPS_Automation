@@ -1,4 +1,5 @@
 import allure
+import os
 from TIPS_utils.date_picker import DatePicker
 from TIPS_utils.policy_summary import PolicySummary
 
@@ -7,7 +8,7 @@ class Policycreation:
     def __init__(self, page):
         self.page = page
 
-   # @allure.step("Create Personal Accident Policy")
+    @allure.step("Create Personal Accident Policy")
     def create_personal_accident_quote(self, mykad, customer_name, date_type, product_type):
 
         # Select Product Category
@@ -54,8 +55,8 @@ class Policycreation:
 
         # Weekly Benefit = No
         self.page.locator("mat-radio-button:has-text('No')").nth(1).click()
-        #self.page.pause()
-        # ====== Renewal Bonus  ====== #
+
+        # =============== Renewal Bonus  ======================== #
         # self.page.locator(".mat-slide-toggle-bar").click()
         # self.page.get_by_role("spinbutton").click()
         # self.page.get_by_role("spinbutton").fill("20")
@@ -91,18 +92,16 @@ class Policycreation:
 
         # State
         self.page.locator(".mat-select-placeholder").first.click()
-
         self.page.get_by_role("option",name="Johor").click()
         self.page.wait_for_timeout(2000)
+
         # Postcode
         self.page.locator(".mat-select-placeholder").click()
-
         self.page.get_by_role("option",name="81100").click()
         self.page.wait_for_timeout(2000)
 
-        # Address
+        # ========== Address ==============#
         self.page.get_by_role("combobox",name="Address Line").click()
-
         self.page.get_by_text("Desa Harmoni",exact=True).click()
         self.page.wait_for_timeout(2000)
 
@@ -122,7 +121,7 @@ class Policycreation:
         # self.page.locator("mat-form-field").filter(has_text="Rebate to Proposer%").locator("#rebate").click()
         # self.page.locator("mat-form-field").filter(has_text="Rebate to Proposer%").locator("#rebate").fill("25")
 
-        # UW writer Questions  #
+        # ========== UW writer Questions ================ #
         self.page.locator("#mat-radio-16-input").check()
         self.page.locator("#mat-radio-18-input").check()
         self.page.locator("#mat-radio-20-input").check()
@@ -135,24 +134,20 @@ class Policycreation:
 
         # Generate Quote
         self.page.get_by_role("button",name="Generate Quote").click()
-
         self.page.wait_for_timeout(6000)
 
         # Download Quote
-        self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
-        self.page.wait_for_timeout(1000)
-        self.page.locator("form").get_by_text("Download Quote & PDS Documents").click()
-
-        self.page.get_by_role("button",name="Download").click()
-
-        self.page.wait_for_timeout(2000)
-
-        try:
+        if self.page.get_by_role("button", name="Download Quote & PDS Documents").is_visible():
+            self.page.get_by_role("button", name="Download Quote & PDS Documents").click()
+            self.page.get_by_label("Download Quote & PDS Documents", exact=True).click()
+            with self.page.expect_download() as download_info:
+                self.page.get_by_role("button", name="Download").click()
+            download = download_info.value
+            download.save_as(os.path.join(r"Documents\PA_quote.pdf"))
             self.page.get_by_text("close").click()
-        except:
-            pass
+            print("Quote & PDF Downloaded successfully")
 
-        # Issue Policy
+        # ============== Issue Policy ================== #
         self.page.get_by_role("button",name="Issue Policy").click()
 
         self.page.get_by_role("button",name="Accept & Proceed").click()

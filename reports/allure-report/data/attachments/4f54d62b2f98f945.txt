@@ -1,9 +1,0 @@
-MyKad : 950812456557
-Name : Vamshi
-Test Finished - Starting Teardown
-Attempting Logout...
-Current URL: https://agent-uat.tuneinsurance.com/#/qms/quote/medical/personal/pa-details
-Logout Failed: Locator.click: Timeout 30000ms exceeded.
-Call log:
-  - waiting for get_by_role("button", name="playwright.test@serole.com")
-

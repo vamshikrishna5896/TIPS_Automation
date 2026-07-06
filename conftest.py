@@ -3,10 +3,8 @@ import pytest
 import allure
 
 from playwright.sync_api import sync_playwright
-
 from TIPS_Pages.login_page import LoginPage
 from TIPS_Pages.logout_page import LogoutPage
-
 
 # ============== PAGE FIXTURE =====================#
 
@@ -19,12 +17,8 @@ def page(request):
 
     context = browser.new_context(no_viewport=True)
 
-    # Start Playwright Trace
-    # context.tracing.start(
-    #     screenshots=True,
-    #     snapshots=True,
-    #     sources=True
-    # )
+    #Start Playwright Trace
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
 
     page = context.new_page()
 
@@ -49,12 +43,12 @@ def page(request):
 
                 os.makedirs("traces",exist_ok=True)
                 # Stop of trace
-                # context.tracing.stop(path=f"traces/{request.node.name}.zip")
-                #
-                # print("Trace Saved")
-            #
-            # else:
-            #     context.tracing.stop()
+                context.tracing.stop(path=f"traces/{request.node.name}.zip")
+
+                print("Trace Saved")
+
+            else:
+                context.tracing.stop()
 
     except Exception as e:
 

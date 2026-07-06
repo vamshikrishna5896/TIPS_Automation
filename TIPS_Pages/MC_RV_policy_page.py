@@ -10,7 +10,7 @@ class MotorMCPage:
     def __init__(self,page):
         self.page = page
 
-   #@allure.step("Create Motor Policy")
+    @allure.step("Create Motor Policy")
     def create_motor_mc_policy(self,reg_no,mykad,customer_name, date_type):
 
         # --------------Motor Product ----------------- #
@@ -65,37 +65,37 @@ class MotorMCPage:
             # elif selected_coverage == "Third Party":
             #     MCExtensions.third_party_extension(self.page)
 
-            #
+
             # =====================================================
             # Sum Insured
             # =====================================================
-            # sum_insured_field = (self.page.locator("mat-form-field").filter(has_text="Vehicle Sum Insured").locator("#sumInsured"))
-            #
-            # current_value = sum_insured_field.input_value()
-            # current_value = current_value.replace(",", "").strip()
-            #
-            # try:
-            #     current_sum = float(current_value)
-            #
-            #     if current_sum < 5000:
-            #         sum_insured_field.click()
-            #         sum_insured_field.press("Control+A")
-            #         sum_insured_field.fill("5000")
-            #         sum_insured_field.press("Tab")
-            #
-            #         print("Sum Insured updated to 5000")
-            #
-            #     else:
-            #         print(f"Sum Insured is {current_sum}, no update required")
-            #
-            # except Exception:
-            #     sum_insured_field.click()
-            #     sum_insured_field.fill("5000")
-            #     sum_insured_field.press("Tab")
-            #
-            #     print("Sum Insured was empty. Updated to 5000")
-            #
-            #     self.page.wait_for_timeout(3000)
+            sum_insured_field = (self.page.locator("mat-form-field").filter(has_text="Vehicle Sum Insured").locator("#sumInsured"))
+
+            current_value = sum_insured_field.input_value()
+            current_value = current_value.replace(",", "").strip()
+
+            try:
+                current_sum = float(current_value)
+
+                if current_sum < 5000:
+                    sum_insured_field.click()
+                    sum_insured_field.press("Control+A")
+                    sum_insured_field.fill("5000")
+                    sum_insured_field.press("Tab")
+
+                    print("Sum Insured updated to 5000")
+
+                else:
+                    print(f"Sum Insured is {current_sum}, no update required")
+
+            except Exception:
+                sum_insured_field.click()
+                sum_insured_field.fill("5000")
+                sum_insured_field.press("Tab")
+
+                print("Sum Insured was empty. Updated to 5000")
+
+                self.page.wait_for_timeout(3000)
 
 
             # --------------- MyKad ------------#
@@ -308,12 +308,10 @@ class MotorMCPage:
 
             # Wait until Policy Number is displayed
 
-            self.page.locator("text=Policy #:").wait_for(
-                state="visible",
-                timeout=120000)
+            self.page.locator("text=Policy #:").wait_for(state="visible", timeout=120000)
 
             # =============== Read Policy Summary from TIPS=============#
-            policy_details = PolicySummary.get_policy_summary(self.page)
+            policy_details = PolicySummary.motor_policy_summary(self.page)
 
             policy_details["Selected Coverage"] = self.selected_coverage
             policy_details["Policy Holder"] = self.ph_name

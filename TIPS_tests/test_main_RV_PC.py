@@ -8,7 +8,12 @@ from TIPS_utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Motor_PC")
 
-@pytest.mark.parametrize("data",[test_data[2]])
+@pytest.mark.parametrize("data",[test_data[3]])
+
+@allure.epic("PrivateMotor Car Insurance")
+@allure.feature("Personal Car Insurance")
+@allure.story("Create RV Policy")
+@allure.title("Personal Car Policy Creation")
 
 def test_create_motor_policy(page, data):
 
@@ -24,9 +29,7 @@ def test_create_motor_policy(page, data):
         customer_name=data["Name"],
         date_type="today")
 
-    # Update Quote Number in Column D
     ExcelWriter.update_motor_pc_mc_rv_details("Motor_PC", str(data["RegNo"]),policy_details=policy_details)
-
 
     print(f"Reg No : {data['RegNo']}")
     print(f"MyKad : {data['MyKadID']}")
