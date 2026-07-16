@@ -3,8 +3,13 @@ import pytest
 import allure
 
 from playwright.sync_api import sync_playwright
-from TIPS_Pages.login_page import LoginPage
-from TIPS_Pages.logout_page import LogoutPage
+
+import SAP_UAT_Pages
+from TIPS_DEV_Pages import logout_page_dev
+from TIPS_UAT_Pages import home_page
+from TIPS_UAT_Pages.login_page import LoginPage
+from TIPS_UAT_Pages.logout_page import LogoutPage
+from SAP_UAT_Pages.home_page_sap import HomePageSAP
 
 # ============== PAGE FIXTURE =====================#
 
@@ -21,9 +26,6 @@ def page(request):
     context.tracing.start(screenshots=True, snapshots=True, sources=True)
 
     page = context.new_page()
-
-    # Login
-    login = LoginPage(page); login.login("playwright.test@serole.com", "Serole@321")
 
     try:
         page.wait_for_load_state("networkidle",timeout=60000)
@@ -53,25 +55,47 @@ def page(request):
     except Exception as e:
 
         print(f"Trace Error: {e}")
-
-    # Logout
+    # ==========================================
+    # Logout Based On Environment (DEV / UAT)
+    # ==========================================
     try:
 
-        logout = LogoutPage(page)
+        current_url = page.url
 
-        logout.logout()
+        # ---------------- UAT Logout ----------------
+        if "agent-uat.tuneinsurance.com" in current_url:
 
-        print("Logout Successful")
+            print("UAT Environment Detected")
+            LogoutPage(page).logout()
+            print("Logout Successful")
+
+        # ---------------- DEV Logout ----------------
+        elif "tune.dev.indigit.io" in current_url:
+
+            print("DEV Environment Detected")
+            logout_page_dev.LogoutPage(page).logout()
+            print("Logout Successful")
+
+        elif "tune.uat.SAP.com" in current_url:
+
+            print("SAP UAT Environment Detected")
+            SAP_UAT_Pages.home_page_sap.HomePageSAP(page).logout(page)
+            print("Logout Successful")
+
+        else:
+
+            print(f"Unknown Environment: {current_url}")
+            print("Skipping Logout...")
 
     except Exception as e:
 
         print(f"Logout Error: {e}")
 
-    # Close Context
+    # ========Close Context ========= #
     try:
 
         context.close()
-        print("Browser Close Successful")
+        print("Browser context Close Successful")
 
     except Exception as e:
 
