@@ -2,11 +2,10 @@ from datetime import datetime, timedelta
 
 class DatePicker:
 
-    # ---- Step 1: turn a simple word into a real date ----
     @staticmethod
     def get_date(option):
 
-        option = option.lower()
+        option = str(option).strip().lower()
 
         if option == "today":
             return datetime.today()
@@ -17,8 +16,19 @@ class DatePicker:
         elif option == "day_after_tomorrow":
             return datetime.today() + timedelta(days=2)
 
-        else:
-            raise Exception(f"Invalid date option: {option}")
+        # DD.MM.YYYY (e.g. 25.07.2025)
+        try:
+            return datetime.strptime(option, "%d.%m.%Y")
+        except ValueError:
+            pass
+
+        # YYYY-MM-DD (e.g. 2025-07-25)
+        try:
+            return datetime.strptime(option, "%Y-%m-%d")
+        except ValueError:
+            pass
+
+        raise Exception(f"Invalid date option: {option}")
 
     # ---- Step 2: click the matching day on the SAP calendar ----
     @staticmethod
@@ -31,8 +41,9 @@ class DatePicker:
         day_number = target_date.day                     # 15 (no leading zero)
         weekday_name = target_date.strftime("%A")         # "Wednesday"
 
-        day_label = f"{month_and_year} {day_number} {weekday_name} Week"
+        day_label = f"{month_and_year} {day_number} {weekday_name}"
 
         print(f"SAP Date -> selecting: {day_label}")
 
-        frame.get_by_label(day_label).get_by_text(str(day_number), exact=True).click()
+        date_cell = frame.get_by_label(day_label).first
+        date_cell.click()

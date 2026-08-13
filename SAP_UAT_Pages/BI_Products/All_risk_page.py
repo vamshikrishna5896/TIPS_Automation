@@ -7,7 +7,7 @@ class AllRiskPage:
     # =====================================================
     # Nature of Risk + Address
     # =====================================================
-    def fill_nature_and_address(self, nature_of_risk, state, city_hint):
+    def fill_nature_and_address(self, nature_of_risk, state, city_hint,premium_type="OneTime Premium"):
 
         # ========Open the risk item (double-click twice, matches SAP's tree behaviour)=============#
         # risk_item = self.frame.get_by_text("All Risks", exact=True)
@@ -42,6 +42,7 @@ class AllRiskPage:
         self.frame.get_by_role("textbox", name="State").click()
         self.frame.locator("#ls-inputfieldhelpbutton").click()
         self.frame.get_by_text(state).click()
+        self.page.wait_for_timeout(1000)
         self.frame.get_by_role("button", name="Copy").click()
         self.page.wait_for_timeout(2000)
         self.page.keyboard.press("Enter")
@@ -50,49 +51,59 @@ class AllRiskPage:
         print("State selected successfully.")
 
         # ---- Postcode
-        self.frame.get_by_role("textbox", name="Postcode").click()
+        postcode_field = self.frame.get_by_role("textbox", name="Postcode")
+        postcode_field.click()
         self.frame.locator("#ls-inputfieldhelpbutton").click()
+        city = self.frame.get_by_text(city_hint, exact=True).first
+        city.click()
         self.frame.get_by_role("button", name="Copy").click()
-        self.frame.get_by_text(city_hint).click()  # e.g. "Johor Bahru"
-        #self.frame.get_by_role("button", name="Copy").click()
-        self.page.keyboard.press("Enter")
-        self.frame.get_by_title("Message Log", exact=True).click()
+        self.page.wait_for_timeout(2000)
+        postcode_field.click()
+        postcode_field.press("Enter")
+        message = self.frame.get_by_title("Message Log", exact=True)
+        if message.is_visible():
+            message.click()
         print("Postcode selected successfully.")
 
         # ---- Save the address / risk item ----
         self.frame.get_by_role("button", name="Save  Emphasized").click()
+        self.page.wait_for_timeout(1000)
         self.frame.get_by_role("button", name="Complete").click()
         self.frame.get_by_role("button", name="Copy  Emphasized").click()
-
         print(f"Risk added -> Nature: {nature_of_risk}, State: {state}")
 
-    # =====================================================
-    # Coverage item + Premium type
-    # =====================================================
-    def fill_coverage_and_premium(self, coverage_item="Machinery and Equipment", premium_type="OneTime Premium"):
-        """Selects the coverage item and its premium type."""
-
-        self.frame.get_by_text(coverage_item).dblclick()
-
+        #=========Premium tab ==============#
+        self.frame.get_by_role("tab", name="Premium").click()
         self.frame.get_by_role("textbox", name="Premium Type").click()
         self.frame.get_by_text(premium_type, exact=True).click()
-
-        self.frame.get_by_role("button", name="Complete Business Transaction").click()
-        self.frame.get_by_role("button", name="Complete Business Transaction").click()
         self.frame.get_by_role("button", name="Create").click()
+        self.page.wait_for_timeout(2000)
         self.frame.get_by_role("button", name="Complete Business Transaction").click()
+        #self.frame.get_by_role("button", name="Complete Business Transaction").click()
 
-        # Re-open the coverage item to set its Sum Insured next
-        self.frame.get_by_text(coverage_item).dblclick()
-        self.frame.get_by_text(coverage_item, exact=True).dblclick()
-
-        print(f"Coverage set -> {coverage_item}, Premium Type: {premium_type}")
+    # =====================================================
+    # Coverage item
+    # =====================================================
+    # def fill_coverage_and_premium(self, coverage_item="Machinery and Equipment"):
+    #     self.page.wait_for_timeout(2000)
+    #     self.frame.get_by_text(coverage_item).dblclick()
+    #     self.frame.get_by_text(coverage_item).dblclick()
+    #
+    #     self.frame.get_by_text(coverage_item, exact=True).dblclick()
+    def fill_coverage_and_premium(self, coverage_item="Machinery and Equipment"):
+        self.page.wait_for_timeout(2000)
+        tree = self.frame.locator("[id^='tree']")
+        coverage = tree.get_by_text(coverage_item, exact=True).first
+        coverage.wait_for(timeout=10000)
+        coverage.dblclick()
+        self.page.wait_for_timeout(1000)
+        coverage.dblclick()
+        print(f"{coverage_item} opened successfully.")
 
     # =====================================================
     # Limit / Sum Insured
     # =====================================================
     def fill_limit_amount(self, limit_amount):
-        """Sets the Limit Amount (Sum Insured) on the coverage."""
 
         self.frame.get_by_role("tab", name="Limit/Deductible").click()
         self.frame.locator(".urST5SCMetricInner").click()
