@@ -220,7 +220,7 @@ class ExcelWriter:
     # PC_NV Motor Quote & policy Number Update
     # =====================================
     @staticmethod
-    def update_motor_pc_nv_details(sheet_name, mykad, quote_number, policy_number):
+    def update_motor_pc_nv_details(sheet_name, sno, policy_details):
 
         project_root = Path(__file__).parent.parent
 
@@ -232,19 +232,35 @@ class ExcelWriter:
 
         for row in range(2, sheet.max_row + 1):
 
-            excel_mykad = str(sheet.cell(row=row, column=1).value)
+            excel_sno = str(sheet.cell(row=row, column=1).value)
 
-            if excel_mykad == str(mykad):
+            if excel_sno == str(sno):
+                sheet.cell(row=row, column=6).value = policy_details["Selected Coverage"]  # C
+                sheet.cell(row=row, column=7).value = policy_details["Policy Holder"]  # D
+                sheet.cell(row=row, column=10).value = policy_details["Quote Number"]  # G
+                sheet.cell(row=row, column=11).value = policy_details["Policy Number"]  # H
 
-                # Quote Number
-                sheet.cell(row=row, column=5).value = quote_number
-                # Policy Number
-                sheet.cell(row=row, column=6).value = policy_number
+                # ---------------- Numeric columns: force 2-decimal display ----------------
+                numeric_cols = {
+                    12: "Sum Insured",
+                    13: "Act Premium",
+                    14: "Basic Premium",
+                    15: "NCD",
+                    16: "Premium after NCD",
+                    17: "Gross Premium",
+                    18: "SST",
+                    19: "Stamp Duty",
+                    20: "Total Premium",
+                }
 
-                break
+                for col, key in numeric_cols.items():
+                    cell = sheet.cell(row=row, column=col)
+                    cell.value = policy_details[key]
+                    cell.number_format = "0.00"
 
-        workbook.save(excel_file)
+                sheet.cell(row=row, column=21).value = "Downloaded Automatically"
+                sheet.cell(row=row, column=22).value = "Downloaded Automatically"
+                sheet.cell(row=row, column=23).value = "playwright.test@serole.com"
 
-        print(f"Quote Number : {quote_number}")
-
-        print(f"Policy Number : {policy_number}")
+            workbook.save(excel_file)
+            print("Policy Summary Updated")

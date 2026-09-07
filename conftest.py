@@ -76,11 +76,12 @@ def page(request):
             logout_page_dev.LogoutPage(page).logout()
             print("Logout Successful")
 
-        elif "tune.uat.SAP.com" in current_url:
 
-            print("SAP UAT Environment Detected")
-            SAP_UAT_Pages.home_page_sap.HomePageSAP(page).logout(page)
-            print("Logout Successful")
+        # elif "tus4appuat.tuneprotect.com" in current_url:
+        #
+        #     print("SAP UAT Environment Detected")
+        #     SAP_UAT_Pages.home_page_sap.HomePageSAP(page).logout(page)
+        #     print("Logout Successful")
 
         else:
 

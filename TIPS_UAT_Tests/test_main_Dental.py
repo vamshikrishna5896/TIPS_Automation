@@ -14,7 +14,7 @@ test_data = ExcelReader.get_test_data("Dental")
 @allure.story("Create New Policy")
 @allure.title("Dental Policy Creation")
 
-@pytest.mark.parametrize("data",[test_data[6]])
+@pytest.mark.parametrize("data",[test_data[8]])
 
 def test_create_dental_policy(page,data):
 

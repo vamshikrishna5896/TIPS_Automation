@@ -61,20 +61,18 @@ class DentalPolicyPage:
         # self.page.get_by_role("combobox", name="Address Line").click()
         # self.page.get_by_text("DYMM Sultan Kedah").click()
 
-            # State
+        # ============State ====================#
         self.page.locator(".mat-select-placeholder").first.click()
-
         self.page.get_by_role("option", name="Johor").click()
         self.page.wait_for_timeout(2000)
-            # Postcode
+        # ================= Postcode ======= #
         self.page.locator(".mat-select-placeholder").click()
 
         self.page.get_by_role("option", name="81100").click()
         self.page.wait_for_timeout(2000)
 
-         # Address
+        # =========== Address ==================#
         self.page.get_by_role("combobox", name="Address Line").click()
-
         self.page.get_by_text("Desa Harmoni", exact=True).click()
         self.page.wait_for_timeout(2000)
 

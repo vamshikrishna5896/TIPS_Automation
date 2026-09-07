@@ -1,5 +1,6 @@
 import allure
 from pathlib import Path
+from TIPS_UAT_Utils.policy_summary import PolicySummary
 
 class MotorPCNVPage:
 
@@ -311,14 +312,7 @@ class MotorPCNVPage:
 
         self.page.wait_for_timeout(15000)
 
-    def get_quote_number(self):
-        quote_number = (
-            self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
+        # =============== Read Policy Summary from TIPS=============#
+        policy_details = PolicySummary.motor_policy_summary(self.page)
 
-        return quote_number
-
-    def get_policy_number(self):
-        policy_number = (
-            self.page.locator("text=Policy #:").text_content().replace("Policy #:", "").strip())
-
-        return policy_number
+        return policy_details

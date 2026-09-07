@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 class DatePicker:
 
     @staticmethod
@@ -16,13 +17,13 @@ class DatePicker:
         elif option == "day_after_tomorrow":
             return datetime.today() + timedelta(days=2)
 
-        # DD.MM.YYYY (e.g. 25.07.2025)
+        # DD.MM.YYYY (e.g. 20.08.2025)
         try:
             return datetime.strptime(option, "%d.%m.%Y")
         except ValueError:
             pass
 
-        # YYYY-MM-DD (e.g. 2025-07-25)
+        # YYYY-MM-DD (e.g. 2025-08-20)
         try:
             return datetime.strptime(option, "%Y-%m-%d")
         except ValueError:
@@ -30,20 +31,28 @@ class DatePicker:
 
         raise Exception(f"Invalid date option: {option}")
 
-    # ---- Step 2: click the matching day on the SAP calendar ----
     @staticmethod
     def select_date(frame, option="today"):
 
         target_date = DatePicker.get_date(option)
 
-        # Build the label exactly the way SAP writes it, e.g. "July 2026 15 Wednesday Week"
-        month_and_year = target_date.strftime("%B %Y")   # "July 2026"
-        day_number = target_date.day                     # 15 (no leading zero)
-        weekday_name = target_date.strftime("%A")         # "Wednesday"
+        # SAP's own calendar field uses DD.MM.YYYY, e.g. "20.08.2025"
+        formatted_date = target_date.strftime("%d.%m.%Y")
 
-        day_label = f"{month_and_year} {day_number} {weekday_name}"
+        #print(f"SAP Date -> typing: {formatted_date}")
 
-        print(f"SAP Date -> selecting: {day_label}")
+        calendar_dialog = frame.get_by_role("dialog", name="Calendar")
+        date_input = calendar_dialog.locator("input").first
 
-        date_cell = frame.get_by_label(day_label).first
-        date_cell.click()
+        date_input.click()
+        date_input.fill(formatted_date)   # fill() clears the old value and types the new one
+
+
+        date_input.press("Enter")
+
+        try:
+            calendar_dialog.wait_for(state="hidden", timeout=10_000)
+        except Exception:
+            pass
+
+        print(f"SAP Date -> selected: {formatted_date}")

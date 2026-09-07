@@ -14,7 +14,7 @@ test_data = ExcelReader.get_test_data("Motor_CV")
 # @allure.story("Create CV Policy")
 # @allure.title("Create Commercial Vehicle Policy")
 
-@pytest.mark.parametrize("data",[test_data[0]])
+@pytest.mark.parametrize("data",[test_data[5]])
 
 def test_create_cv_policy(page, data):
 

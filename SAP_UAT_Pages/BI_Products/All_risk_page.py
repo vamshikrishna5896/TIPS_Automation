@@ -4,18 +4,13 @@ class AllRiskPage:
         self.page = page
         self.frame = page.locator("iframe[title='Application']").content_frame
 
+
+
     # =====================================================
     # Nature of Risk + Address
     # =====================================================
-    def fill_nature_and_address(self, nature_of_risk, state, city_hint,premium_type="OneTime Premium"):
+    def fill_nature_and_address(self,nature_of_risk, state, city_hint,premium_type="OneTime Premium"):
 
-        # ========Open the risk item (double-click twice, matches SAP's tree behaviour)=============#
-        # risk_item = self.frame.get_by_text("All Risks", exact=True)
-        # risk_item.wait_for(timeout=10000)
-        # risk_item.dblclick()
-        # #self.page.pause()
-        # self.page.wait_for_timeout(2000)
-        # risk_item.dblclick()
         self.page.wait_for_timeout(2000)
         risk_item = self.frame.get_by_text("All Risks", exact=True)
         risk_item.wait_for(timeout=10000)
@@ -81,16 +76,8 @@ class AllRiskPage:
         self.frame.get_by_role("button", name="Complete Business Transaction").click()
         #self.frame.get_by_role("button", name="Complete Business Transaction").click()
 
-    # =====================================================
-    # Coverage item
-    # =====================================================
-    # def fill_coverage_and_premium(self, coverage_item="Machinery and Equipment"):
-    #     self.page.wait_for_timeout(2000)
-    #     self.frame.get_by_text(coverage_item).dblclick()
-    #     self.frame.get_by_text(coverage_item).dblclick()
-    #
-    #     self.frame.get_by_text(coverage_item, exact=True).dblclick()
-    def fill_coverage_and_premium(self, coverage_item="Machinery and Equipment"):
+
+    def fill_machinery_coverage_and_premium(self, coverage_item="Machinery and Equipment"):
         self.page.wait_for_timeout(2000)
         tree = self.frame.locator("[id^='tree']")
         coverage = tree.get_by_text(coverage_item, exact=True).first
@@ -103,7 +90,7 @@ class AllRiskPage:
     # =====================================================
     # Limit / Sum Insured
     # =====================================================
-    def fill_limit_amount(self, limit_amount):
+    def fill_machinery_limit_amount(self, limit_amount):
 
         self.frame.get_by_role("tab", name="Limit/Deductible").click()
         self.frame.locator(".urST5SCMetricInner").click()
@@ -115,4 +102,32 @@ class AllRiskPage:
 
         self.frame.get_by_role("button", name="Copy  Emphasized").click()
 
+        print(f"Limit Amount (SI) set to: {limit_amount}")
+
+    def fill_office_equipment(self, coverage_item="Office Equipment"):
+        self.page.wait_for_timeout(2000)
+        tree = self.frame.locator("[id^='tree']")
+        coverage = tree.get_by_text(coverage_item, exact=True).first
+        coverage.wait_for(timeout=10000)
+        coverage.dblclick()
+        self.page.wait_for_timeout(1000)
+        coverage.dblclick()
+        print(f"{coverage_item} opened successfully.")
+
+        # =====================================================
+        # Limit / Sum Insured
+        # =====================================================
+
+    def fill_office_equipment_limit_amount_(self, limit_amount,coverage_amount="ST All Risk Coverage SI"):
+        self.frame.get_by_role("tab", name="Limit/Deductible").click()
+        self.page.wait_for_timeout(1000)
+        self.frame.get_by_role("button", name="Add").click()
+        self.frame.get_by_role("textbox", name="ST All Risk Coverage SI").click()
+        self.frame.get_by_role("option", name=coverage_amount).click()
+        self.frame.get_by_role("button", name="Create").click()
+        self.page.wait_for_timeout(2000)
+        limit_field = self.frame.get_by_role("textbox", name="Limit Amount(SI) Required")
+        limit_field.click()
+        limit_field.fill(str(limit_amount))
+        self.frame.get_by_role("button", name="Copy  Emphasized").click()
         print(f"Limit Amount (SI) set to: {limit_amount}")
