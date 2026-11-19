@@ -9,7 +9,7 @@ from TIPS_UAT_Utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Motor_PC")
 
-@pytest.mark.parametrize("data",[test_data[8]])
+@pytest.mark.parametrize("data",[test_data[7]])
 
 @allure.epic("PrivateMotor Car Insurance")
 @allure.feature("Personal Car Insurance")
@@ -33,7 +33,8 @@ def test_create_motor_policy(page, data):
         customer_name=data["Name"],
         date_type="today")
 
-    ExcelWriter.update_motor_pc_mc_rv_details("Motor_PC", str(data["Sno"]),policy_details=policy_details)
+    ExcelWriter.update_motor_pc_mc_rv_details("Motor_PC", str(data["Sno"]),
+                                              policy_details=policy_details)
 
     print(f"Reg No : {data['RegNo']}")
     print(f"MyKad : {data['MyKadID']}")

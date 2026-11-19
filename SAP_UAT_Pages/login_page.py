@@ -1,7 +1,9 @@
 class LoginPage:
 
     URL = "https://tus4appuat.tuneprotect.com:44303/sap/bc/ui2/flp#Shell-home"
-    USERNAME = "VSWAPNA"
+    # USERNAME = "VSWAPNA"
+    # PASSWORD = "Quality@12345"
+    USERNAME = "SSANTHOSH"
     PASSWORD = "Quality@12345"
 
     def __init__(self, page):

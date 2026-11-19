@@ -9,7 +9,7 @@ from TIPS_UAT_Utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("PA")
 
-@pytest.mark.parametrize("data", [test_data[12]])    # ========>  If want Run only first row from Excel
+@pytest.mark.parametrize("data", [test_data[17]])    # ========>  If want Run only first row from Excel
 #@pytest.mark.parametrize("data", test_data[1:5])   # =========> If want to Run 1 to 5 Rows in Excel
 #@pytest.mark.parametrize("data",test_data)
 

@@ -9,7 +9,7 @@ from TIPS_UAT_Utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Motor_PC_NV")
 
-@pytest.mark.parametrize("data", [test_data[0]])
+@pytest.mark.parametrize("data", [test_data[10]])
 
 def test_create_motor_nv_policy(page, data):
 
@@ -22,6 +22,9 @@ def test_create_motor_nv_policy(page, data):
 
     home.navigate_to_new_quote()
 
-    motor.create_motor_policy(mykad=str(data["MyKadID"]), customer_name=data["Name"], sum_insured=data["SumInsured"])
+    policy_details = motor.create_motor_policy(mykad=str(data["MyKadID"]), customer_name=data["Name"],
+                              sum_insured=data["SumInsured"])
 
-    ExcelWriter.update_motor_pc_nv_details("Motor_PC_NV", str(data["MyKadID"]))
+    ExcelWriter.update_motor_pc_mc_nv_details("Motor_PC_NV", str(data["Sno"]), policy_details)
+
+

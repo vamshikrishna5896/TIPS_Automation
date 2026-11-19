@@ -1,8 +1,11 @@
 
 class LoginPage:
 
-    USERNAME = "playwright.test@serole.com"
-    PASSWORD = "Serole@4355"
+    # USERNAME = "playwright.test@serole.com"
+    # PASSWORD = "Serole@4355"
+
+    USERNAME = "vamshikrishna.pasunuti@serole.com"
+    PASSWORD = "Serole@789"
 
     def __init__(self, page):
         self.page = page

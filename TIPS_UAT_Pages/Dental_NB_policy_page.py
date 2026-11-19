@@ -105,7 +105,6 @@ class DentalPolicyPage:
             self.page.get_by_role("button", name="send").click()
         download = download_info.value
         download.save_as(os.path.join(r"Documents_UAT\Dental_quote.pdf"))
-        self.page.get_by_text("close").click()
         print("Quote & PDF Downloaded successfully")
 
         # -----Issue Policy ------#

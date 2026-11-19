@@ -1,17 +1,20 @@
 import allure
 from pathlib import Path
 from TIPS_UAT_Utils.policy_summary import PolicySummary
+from TIPS_UAT_Pages.extensions_PC_MC_CV import PCExtensions
 
 class MotorPCNVPage:
 
     def __init__(self,page):
         self.page = page
 
+
     def create_motor_policy(self, mykad, customer_name, sum_insured):
 
         # Motor Product
         self.page.get_by_role("heading", name="Motor").click()
         self.page.wait_for_timeout(1000)
+
         # New registration button
         self.page.get_by_role("heading", name="New Registration").click()
         self.page.wait_for_timeout(1000)
@@ -37,6 +40,7 @@ class MotorPCNVPage:
         self.page.locator("mat-form-field").filter(has_text="Chassis # *").locator("#chassisNo").click()
         self.page.locator("mat-form-field").filter(has_text="Chassis # *").locator("#chassisNo").fill("46354645745")
         self.page.wait_for_timeout(2000)
+
         # ==============Vehicle Make ==============#
         self.page.locator(".mat-select-placeholder").first.click()
         self.page.get_by_role("option", name="HONDA").click()
@@ -53,14 +57,16 @@ class MotorPCNVPage:
         self.page.locator(".mat-select-placeholder").first.click()
         self.page.get_by_role("option", name="NA").click()
         self.page.wait_for_timeout(2000)
-        #self.page.pause()
 
-        # Engine capacity
+
+        # ============= Engine capacity ===============#
         self.page.locator("mat-form-field").filter(has_text="Engine Capacity *").locator("#cc").click()
         self.page.locator("mat-form-field").filter(has_text="Engine Capacity *").locator("#cc").fill("1220")
         self.page.wait_for_timeout(2000)
 
-        self.page.locator(".mat-select-placeholder.mat-select-min-line.ng-tns-c176-105").click()
+        #self.page.pause()
+        #==========Body ===========#
+        self.page.locator(".mat-select-placeholder.mat-select-min-line.ng-tns-c176-106").click()
         self.page.get_by_role("option", name="CONVERTIBLE").click()
 
         self.page.locator("mat-form-field").filter(has_text="Seating Capacity *").locator("#seatCapacity").click()
@@ -69,6 +75,20 @@ class MotorPCNVPage:
         self.page.get_by_role("button", name="Save Vehicle Info").click()
         self.page.wait_for_timeout(4000)
 
+        # ---- COVERAGE TYPE (read default) ----
+        self.page.wait_for_timeout(5000)
+        selected_coverage = self.page.locator("#mat-select-value-9").inner_text().strip()
+        print("Default Coverage type: ", selected_coverage)
+
+        #self.page.pause()
+
+        # -------- COVERAGE TYPE -------#
+        # self.page.locator("#mat-select-value-9").click()
+        # self.page.get_by_role("option", name="Comprehensive").click()
+
+        self.page.locator("#mat-select-value-7").click()
+        self.page.get_by_role("option", name="Third Party Fire & Theft").click()
+
         # Sum Insured
         sum_insured_field = (self.page.locator("mat-form-field").filter(has_text="Vehicle Sum Insured").locator("input#sumInsured"))
         sum_insured_field.click()
@@ -76,6 +96,37 @@ class MotorPCNVPage:
         sum_insured_field.fill(str(sum_insured))
         sum_insured_field.press("Tab")
         print(f"Sum Insured Entered : {sum_insured}")
+
+        #self.page.pause()
+
+       # ========= Agreed value uncheck ========= #
+        self.page.get_by_text("Agreed Value", exact=True).click()
+
+        self.page.get_by_role("button", name="Extension Coverage").click()
+
+        # === Motor shield ====#
+        # self.page.locator("#mat-select-value-9").click()
+        # self.page.get_by_text("Motor Shield").click()
+
+        # # ==== Auto buddy ==#
+        self.page.locator("#mat-select-value-9").click()
+        self.page.get_by_text("Autobuddy").click()
+        self.page.wait_for_timeout(2000)
+        self.page.locator(".mat-select-placeholder").first.click()
+        self.page.wait_for_timeout(2000)
+        self.page.get_by_text("PLAN B").click()
+
+        # # =============================== #
+        # # Extensions coverage selection
+        # # =============================== #
+        # if selected_coverage == "Comprehensive":
+        #     PCExtensions.comprehensive_extension(self.page)
+        # elif selected_coverage == "TP, Fire & Theft":
+        #     PCExtensions.tpft_extension(self.page)
+        # else:
+        #     print("Third Party selected")
+
+
         # # Sum Insured Field
         # sum_insured_field = (self.page.locator("mat-form-field").filter(has_text="Vehicle Sum Insured").locator("input#sumInsured"))
         # sum_insured_field.click()
@@ -123,7 +174,7 @@ class MotorPCNVPage:
             self.page.get_by_role("option", name="Johor").click()
             self.page.wait_for_timeout(3000)
 
-            # ---- PINCODE ----
+            # ---- PINCODE ----#
             self.page.locator(".mat-select-placeholder").first.click()
             self.page.get_by_role("option", name="81100").click()
             self.page.wait_for_timeout(2000)
@@ -155,7 +206,9 @@ class MotorPCNVPage:
         # Get Quote Number
         # ==========================================
 
-        quote_number = self.get_quote_number()
+        # Get Quote Number from PolicySummary
+        quote_number = (
+            self.page.locator("text=Quote Reference #").locator("xpath=following-sibling::*").inner_text().strip())
 
         self.page.wait_for_timeout(2000)
 
@@ -248,13 +301,13 @@ class MotorPCNVPage:
 
             manager_page = manager_context.new_page()
 
-            manager_page.set_viewport_size({"width": 1520, "height": 1000})
+            #manager_page.set_viewport_size({"width": 1520, "height": 1000})
 
             manager_page.goto(f"https://agent-uat.tuneinsurance.com/#/qms/quote/motor/nreg/review?quoteNr={quote_number}")
 
             manager_page.get_by_role("textbox", name="Username or email").fill("rahul@serole.com")
 
-            manager_page.get_by_role("textbox", name="Password").fill("Serole@123")
+            manager_page.get_by_role("textbox", name="Password").fill("Tune@456")
 
             manager_page.get_by_role("button", name="Login").click()
 

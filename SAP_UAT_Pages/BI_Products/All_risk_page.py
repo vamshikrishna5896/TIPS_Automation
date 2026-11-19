@@ -120,7 +120,8 @@ class AllRiskPage:
 
     def fill_office_equipment_limit_amount_(self, limit_amount,coverage_amount="ST All Risk Coverage SI"):
         self.frame.get_by_role("tab", name="Limit/Deductible").click()
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(2000)
+
         self.frame.get_by_role("button", name="Add").click()
         self.frame.get_by_role("textbox", name="ST All Risk Coverage SI").click()
         self.frame.get_by_role("option", name=coverage_amount).click()

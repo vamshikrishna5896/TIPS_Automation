@@ -9,7 +9,7 @@ from TIPS_UAT_Utils.excel_writer import ExcelWriter
 
 test_data = ExcelReader.get_test_data("Motor_MC")
 
-@pytest.mark.parametrize("data",[test_data[2]])
+@pytest.mark.parametrize("data",[test_data[5]])
 
 @allure.epic("MotorCycle Insurance")
 @allure.feature("Personal MotorCycle Insurance")

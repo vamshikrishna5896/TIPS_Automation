@@ -14,7 +14,7 @@ from SAP_UAT_Utils.excel_writer import ExcelWriter
 test_data = ExcelReader.get_test_data("Motor_MC")
 
 
-@pytest.mark.parametrize("data", [test_data[0]])
+@pytest.mark.parametrize("data", [test_data[1]])
 
 # @allure.epic("SAP Policy Management")
 # @allure.feature("New Business")

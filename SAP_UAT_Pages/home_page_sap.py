@@ -1,5 +1,10 @@
 import re
-from SAP_UAT_Utils.date_picker import DatePicker
+from datetime import datetime
+
+today = datetime.now().strftime("%d.%m.%Y")
+
+#date = "25.11.2025"
+date = today
 
 class HomePageSAP:
 
@@ -25,22 +30,18 @@ class HomePageSAP:
     # =====================================================
     # Common Date Selection
     # =====================================================
-    def fill_dates(self, frame, date_type="today"):
+    def fill_dates(self, frame, date_type=None):
 
         # Policy Start
-        frame.locator("#ls-inputfieldhelpbutton").click()
-        DatePicker.select_date(frame, date_type)
+        frame.get_by_role("textbox" , name="Policy Start Required").fill(date)
         self.page.wait_for_timeout(1000)
 
         # Submission To PP Date
-        frame.get_by_role("textbox", name="Submission To PP Date Required").click()
-        frame.locator("#ls-inputfieldhelpbutton").click()
-        DatePicker.select_date(frame, date_type)
+        frame.get_by_role("textbox", name="Submission To PP Date Required").fill(date)
         self.page.wait_for_timeout(1000)
+
         # Received Date
-        frame.get_by_role("textbox", name="Received Date Required").click()
-        frame.locator("#ls-inputfieldhelpbutton").click()
-        DatePicker.select_date(frame, date_type)
+        frame.get_by_role("textbox", name="Received Date Required").fill(date)
         self.page.wait_for_timeout(1000)
 
     # =====================================================
@@ -74,13 +75,13 @@ class HomePageSAP:
         raise Exception(f"Sales Product '{sales_product}' not found.")
 
     # =====================================================
-    # Motor PC
+    # Motor car
     # =====================================================
     def start_new_application_pc(
             self,
             new_business_page,
             sales_product="Motorcar",
-            date_type="today",
+            date_type=None,
             acquisition_type="New Business"):
 
         frame = new_business_page.locator("iframe[title='Application']").content_frame
@@ -104,7 +105,7 @@ class HomePageSAP:
             self,
             new_business_page,
             sales_product="Motorcycle",
-            date_type="today",
+            date_type=None,
             acquisition_type="New Business"):
 
         frame = new_business_page.locator("iframe[title='Application']").content_frame
@@ -127,7 +128,7 @@ class HomePageSAP:
     def start_new_application_bi(self,
             new_business_page,
             sales_product="Business Insurance",
-            date_type="today",
+            date_type=None,
             acquisition_type=None):
 
         frame = new_business_page.locator("iframe[title='Application']").content_frame
@@ -142,10 +143,13 @@ class HomePageSAP:
         frame.get_by_role("button", name="Create  Emphasized").click()
         print(f"New application started. Sales Product Template: {sales_product}")
 
+    # =====================================================
+    # Personal Accident
+    # =====================================================
     def start_new_application_pa(self,
             new_business_page,
             sales_product="Personal Accident, Travel & Health",
-            date_type="today",
+            date_type=None,
             acquisition_type=None):
 
         frame = new_business_page.locator("iframe[title='Application']").content_frame

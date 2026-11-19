@@ -220,47 +220,47 @@ class ExcelWriter:
     # PC_NV Motor Quote & policy Number Update
     # =====================================
     @staticmethod
-    def update_motor_pc_nv_details(sheet_name, sno, policy_details):
+    def update_motor_pc_mc_nv_details(sheet_name, sno, policy_details):
 
-        project_root = Path(__file__).parent.parent
+            project_root = Path(__file__).parent.parent
+            excel_file = project_root / "testdata_excel" / "test_data_UAT.xlsx"
 
-        excel_file = (project_root / "testdata_excel" / "test_data_UAT.xlsx")
+            workbook = load_workbook(excel_file)
+            sheet = workbook[sheet_name]
 
-        workbook = load_workbook(excel_file)
+            for row in range(2, sheet.max_row + 1):
 
-        sheet = workbook[sheet_name]
+                excel_sno = str(sheet.cell(row=row, column=1).value)
 
-        for row in range(2, sheet.max_row + 1):
+                if excel_sno == str(sno):
 
-            excel_sno = str(sheet.cell(row=row, column=1).value)
+                    #sheet.cell(row=row, column=6).value = policy_details["Selected Coverage"]
+                    #sheet.cell(row=row, column=7).value = policy_details["Policy Holder"]
+                    sheet.cell(row=row, column=8).value = policy_details["Quote Number"]
+                    sheet.cell(row=row, column=9).value = policy_details["Policy Number"]
 
-            if excel_sno == str(sno):
-                sheet.cell(row=row, column=6).value = policy_details["Selected Coverage"]  # C
-                sheet.cell(row=row, column=7).value = policy_details["Policy Holder"]  # D
-                sheet.cell(row=row, column=10).value = policy_details["Quote Number"]  # G
-                sheet.cell(row=row, column=11).value = policy_details["Policy Number"]  # H
+                    # ---------------- Numeric columns: force 2-decimal display ----------------
+                    numeric_cols = {
+                        10: "Act Premium",
+                        11: "Basic Premium",
+                        12: "NCD",
+                        13: "Premium after NCD",
+                        14: "Gross Premium",
+                        15: "SST",
+                        16: "Stamp Duty",
+                        17: "Total Premium",
+                    }
 
-                # ---------------- Numeric columns: force 2-decimal display ----------------
-                numeric_cols = {
-                    12: "Sum Insured",
-                    13: "Act Premium",
-                    14: "Basic Premium",
-                    15: "NCD",
-                    16: "Premium after NCD",
-                    17: "Gross Premium",
-                    18: "SST",
-                    19: "Stamp Duty",
-                    20: "Total Premium",
-                }
+                    for col, key in numeric_cols.items():
+                        cell = sheet.cell(row=row, column=col)
+                        cell.value = policy_details[key]
+                        cell.number_format = "0.00"
 
-                for col, key in numeric_cols.items():
-                    cell = sheet.cell(row=row, column=col)
-                    cell.value = policy_details[key]
-                    cell.number_format = "0.00"
+                    sheet.cell(row=row, column=19).value = "Downloaded Automatically"
+                    sheet.cell(row=row, column=20).value = "Downloaded Automatically"
+                    sheet.cell(row=row, column=21).value = "playwright.test@serole.com"
 
-                sheet.cell(row=row, column=21).value = "Downloaded Automatically"
-                sheet.cell(row=row, column=22).value = "Downloaded Automatically"
-                sheet.cell(row=row, column=23).value = "playwright.test@serole.com"
+                    break
 
             workbook.save(excel_file)
             print("Policy Summary Updated")

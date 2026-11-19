@@ -399,10 +399,12 @@ class MotorPCPage:
         except Exception:
             print("'Proceed to Policy Issuance' not shown (expected for NSTP after manager approval) - skipping")
 
+        # ============= Isuue policy button ========#
         self.page.get_by_role("button", name="Issue Policy").click()
         self.page.wait_for_timeout(30000)
 
-        self.page.get_by_role("button", name="Download & e-mail Policy").click()
+        # ===========Download policy schudule ========#
+        self.page.get_by_text("Download & Email Policy", exact=True).click()
         self.page.wait_for_timeout(5000)
 
         with self.page.expect_download() as download_info:

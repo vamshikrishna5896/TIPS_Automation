@@ -143,13 +143,22 @@ class Policycreation:
             self.page.get_by_role("button", name="Download").click()
         download = download_info.value
         download.save_as(os.path.join(r"Documents_UAT\PA_quote.pdf"))
-        self.page.get_by_text("close").click()
+
         print("Quote & PDF Downloaded successfully")
 
         # ============== Issue Policy ================== #
         self.page.get_by_role("button",name="Issue Policy").click()
 
         self.page.get_by_role("button",name="Accept & Proceed").click()
+        self.page.wait_for_timeout(5000)
+        self.page.get_by_text("Download & Email Policy", exact=True).click()
+        self.page.get_by_label("Download Policy Schedule").click()
+        with self.page.expect_download() as download_info:
+            self.page.get_by_text("Download", exact=True).click()
+            self.page.get_by_text("close", exact=True).click()
+        download = download_info.value
+        download.save_as(os.path.join(r"Documents_UAT\PA_policy.pdf"))
+        print("Schedule Letter PDF Generated successfully")
 
         # Wait until Policy Number is displayed
         self.page.wait_for_timeout(18000)

@@ -14,7 +14,7 @@ from SAP_UAT_Utils.excel_writer import ExcelWriter
 test_data = ExcelReader.get_test_data("Motor_PC")
 
 
-@pytest.mark.parametrize("data", [test_data[2]])
+@pytest.mark.parametrize("data", [test_data[4]])
 
 # @allure.epic("SAP Policy Management")
 # @allure.feature("New Business")
@@ -60,7 +60,7 @@ def test_create_sap_motorcar_business(page, data):
             garaged=data["Garaged"],
             anti_theft=data["AntiTheft"],)
 
-        motor_page.rebate_percentage()
+        #motor_page.rebate_percentage()
 
         motor_page.select_coverage(coverage_name="Comprehensive")
 
