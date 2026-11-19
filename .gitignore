@@ -1,0 +1,26 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environment
+.venv/
+venv/
+
+# Test reports
+allure-results/
+allure-report/
+reports/
+
+# PyCharm
+.idea/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+traces
+videos
